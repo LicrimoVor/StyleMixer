@@ -2,3 +2,4 @@
 node_modules/
 stylegan2/
 stylegan2*
+build/
