@@ -1,10 +1,11 @@
 import { StyleSettings } from "./StyleSettings";
 
 export type ImageMix = {
+  id: number;
   settings: StyleSettings;
+  isLoading: boolean;
   img?: string;
   error?: string;
-  isLoading: boolean;
 };
 
 export type StyleMix = {

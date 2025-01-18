@@ -1,19 +1,19 @@
-import { FC, memo, useCallback, useState, } from 'react';
+import { FC, memo, ReactElement } from 'react';
 
-import './StyleMixerViewer.css';
-import { useStyleMixContext } from '@/stores/context/styleMixer';
+
 import { ImageMix, } from '@/entities/StyleMixer';
-import { createStyleMix } from '@/api/styleMix';
-import { StyleMixerSettings } from '../../StyleMixerSettings';
 import { Image } from '@/components/shared/Image';
 import download from '@/assets/download.png';
+import { Skeleton } from '@/components/shared/Skeleton';
+import { StyleMixerSettings } from '../../StyleMixerSettings';
+import './StyleMixerViewer.css';
 
 interface StyleMixerViewerProps {
     className?: string,
     imageMix: ImageMix,
 };
 
-/** Отображение styleMix */
+/** Отображение imageMix */
 export const StyleMixerViewer: FC <StyleMixerViewerProps> = memo((
     props: StyleMixerViewerProps
 ) => {
@@ -22,20 +22,35 @@ export const StyleMixerViewer: FC <StyleMixerViewerProps> = memo((
         imageMix,
     } = props;
 
-    const [isLoadinge, setIsLoading] = useState(true);
-    const { state, dispatch } = useStyleMixContext()
-    const createStyleMixBtn = useCallback(() => {
-        // setIsLoading
-        // createStyleMix().then(() => ());
-    }, [])
+    let InnerElement: ReactElement;
+    if (imageMix.isLoading) {
+        InnerElement = (
+            <>
+                <Skeleton width={150} height={150} border='8px' />
+            </>
+        )
+    } else if (imageMix.error) {
+        InnerElement = (
+            <div className='StyleMixerViewerError'>
+                {imageMix.error}
+            </div>
+        )
+    } else {
+        InnerElement = (
+            <>
+                <a href={imageMix.img} download='ImageMix' className='StyleMixerViewerDownload'>
+                    <Image src={download} size={25}/>
+                </a>
+                <Image src={imageMix.img} size={150} open border={8}/>
+            </>
+        )
+    }
 
     return (
         <div className={'StyleMixerViewer ' + className}>
-            <a href={imageMix.img} download='ImageMix' className='StyleMixerViewerDownload'>
-                <Image src={download} size={25}/>
-            </a>
-            <Image src={imageMix.img} size={120} open border={8}/>
-            <StyleMixerSettings disabled settings={imageMix.settings} direction='column'/>
+            <h4 className='StyleMixerViewerTitle'>{imageMix.id+1}</h4>
+            {InnerElement}
+            <StyleMixerSettings disabled settings={imageMix.settings} direction='column' />
         </div>
     );
 });

@@ -1,24 +1,22 @@
 import { FC, memo, } from 'react';
 
-import { classNames } from '@/shared/lib/classNames';
-
-import cls from './Header.module.scss';
+import'./Header.css';
 
 interface HeaderProps {
     className?: string,
 };
 
-/** Докстринг */
+/** Шапка сайта */
 export const Header: FC <HeaderProps> = memo((
-    props: Header Props
+    props: HeaderProps
 ) => {
     const {
-        className,
+        className='',
     } = props;
 
     return (
-        <div className={classNames(cls.Header, {}, [className])}>
-            test
+        <div className={'Header ' + className}>
+            <h1 className='title'>StyleMixer - LicrimoVor project</h1>
         </div>
     );
 });

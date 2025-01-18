@@ -12,7 +12,7 @@ interface SkeletonProps {
 /** Предзагрузчик - скелетон */
 export const Skeleton: FC<SkeletonProps> = memo((props: SkeletonProps) => {
     const {
-        className,
+        className='',
         height,
         width,
         border,

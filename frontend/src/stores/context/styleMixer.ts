@@ -30,16 +30,19 @@ export const styleMixerReducer: Reducer<StyleContext, StyleMixerAction> = (
 ) => {
   switch (action.type) {
     case "init": {
-      const styles: StyleMix[] = action.payload.map((style: StyleMix) => ({
-        ...style,
-        isInited: true,
-      }));
+      const styles: StyleMix[] = action.payload.map(
+        (style: StyleMix, i: number) => ({
+          ...style,
+          id: i,
+          isInited: true,
+        })
+      );
       return { isInited: true, styles };
     }
 
     case "create": {
       const styleMixer: StyleMix = action.payload;
-      styleMixer.mix = [{ isLoading: true, settings: action.otherPayload }];
+      styleMixer.mix = [];
       styleMixer.id = state.styles.length;
       styleMixer.isInited = false;
       return { ...state, styles: [...state.styles, styleMixer] };
@@ -55,9 +58,13 @@ export const styleMixerReducer: Reducer<StyleContext, StyleMixerAction> = (
         styles: [
           ...state.styles.map((styleMixer, indx) => {
             if (indx === action.id) {
+              const imageMix = action.payload;
+              imageMix.id = styleMixer.mix.length;
+
               return {
                 ...styleMixer,
-                mix: [...styleMixer.mix, action.payload],
+                isInited: true,
+                mix: [...styleMixer.mix, imageMix],
               };
             }
 

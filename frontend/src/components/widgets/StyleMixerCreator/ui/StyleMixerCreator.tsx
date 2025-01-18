@@ -6,6 +6,7 @@ import './StyleMixerCreator.css';
 import { ImageEditable } from './ImageEditable';
 import { StyleMixerSettings } from '../../StyleMixerSettings';
 import { StyleSettings } from '@/entities/StyleSettings';
+import { DefaultStyleSettings } from '@/config/const';
 
 
 interface StyleMixerCreatorProps {
@@ -13,10 +14,7 @@ interface StyleMixerCreatorProps {
     callback?: (content: File, style: File, settings: StyleSettings) => void,
     refresh?: boolean,
 };
-const defaultSettings: StyleSettings = {
-    model: 'VGG16',
-    size: 128
-}
+
 
 /** Панель изменения стиля изображения */
 export const StyleMixerCreator: FC <StyleMixerCreatorProps> = memo((
@@ -29,7 +27,7 @@ export const StyleMixerCreator: FC <StyleMixerCreatorProps> = memo((
     } = props;
     const [style, setStyle] = useState<File>();
     const [content, setContent] = useState<File>();
-    const [settings, setSettings] = useState<StyleSettings>(defaultSettings);
+    const [settings, setSettings] = useState<StyleSettings>(DefaultStyleSettings);
 
     useEffect(() => {
         setStyle(undefined)

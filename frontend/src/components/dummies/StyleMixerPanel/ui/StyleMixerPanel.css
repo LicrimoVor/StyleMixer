@@ -8,5 +8,26 @@
 }
 
 .StyleMixerPanel {
-    width: 800px;
+    width: auto;
+    max-width: 100%;
+}
+
+.HStack {
+    display: flex;
+    flex-direction: row;
+}
+
+.VStack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.SkeletonRedactorTitle {
+    margin: 16px;
+}
+
+.SkeletonRedactorViews {
+    background-color: var(--dark-bg);
 }

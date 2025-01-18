@@ -1,9 +1,20 @@
-.App {
-  min-height: 100vh;
-  min-width: 99vw;
-  overflow: auto;
-  justify-content: center;
+#root {
+  height: 100%;
+  width: 100%;
   display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.App {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  padding: 0px 64px;
 }
 
 body {

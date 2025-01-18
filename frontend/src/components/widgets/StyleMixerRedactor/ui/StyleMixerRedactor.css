@@ -1,6 +1,6 @@
 .StyleMixerRedactor0 {
     display: flex;
-    gap: 32px;
+    gap: 16px;
     width: 100%;
 }
 
@@ -25,6 +25,8 @@
     overflow-y: hidden;
     gap: 18px;
     background-color: var(--dark-bg);
+    border-radius: 20px;
+    width: 100%;
 }
 
 .StyleMixerRedactorBtn{
@@ -45,4 +47,9 @@
 
 .StyleMixerRedactorBtn:hover {
     opacity: 0.6;
+}
+
+.StyleMixerRedactoTitle {
+    font-size: 32px;
+    margin: 16px;
 }
