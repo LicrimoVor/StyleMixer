@@ -11,4 +11,12 @@ export default [
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
+  {
+    rules: {
+      'react/react-in-jsx-scope': "off",
+      'react/display-name': 'off',
+      'react/prop-types': 'off',
+      '@typescript-eslint/no-unused-vars': 'warn',
+    }
+  }
 ];

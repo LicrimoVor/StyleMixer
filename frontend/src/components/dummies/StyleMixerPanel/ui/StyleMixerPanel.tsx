@@ -51,7 +51,7 @@ export const StyleMixerPanel: FC <StyleMixerPanelProps> = memo((
                     type: 'init',
                     payload: value,
                 })
-            }).catch((reason) => {
+            }).catch(() => {
                 dispatch({type: 'init', payload: []})
             })
         }

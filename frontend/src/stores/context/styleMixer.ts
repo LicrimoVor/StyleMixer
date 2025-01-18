@@ -1,4 +1,4 @@
-import { Reducer, createContext, Dispatch, useContext, act } from "react";
+import { Reducer, createContext, Dispatch, useContext } from "react";
 
 import { StyleMix } from "@/entities/StyleMixer";
 
@@ -17,6 +17,7 @@ export const StyleMixerContext = createContext<{
 
 type IActionType = "create" | "addMix" | "init";
 
+/* eslint @typescript-eslint/no-explicit-any: "off" */
 export interface StyleMixerAction {
   type: IActionType;
   id?: number;

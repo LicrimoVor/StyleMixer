@@ -11,10 +11,8 @@
     text-decoration: none;
     margin: 0;
     padding: 1px 20px;
-
     background-color: var(--star-stroke);
     border-radius: 8px;
-    
     display: flex;
     align-items: center;
     justify-content: center;
@@ -26,7 +24,7 @@
 
 .StyleMixerViewerTitle {
     font-size: 24px;
-    margin: 0px;
+    margin: 0;
 }
 
 .StyleMixerViewerError {

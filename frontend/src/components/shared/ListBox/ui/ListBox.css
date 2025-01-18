@@ -1,5 +1,4 @@
 .ListBoxBtn {
-    outline-color: transparent;
     display: flex;
     background: var(--icon);
     padding: 4px 8px;
@@ -29,13 +28,14 @@
     padding: 8px 20px;
     min-width: 100%;
 }
+
 .Item.Selected {
     cursor: default;
     color: var(--bg-color);
     background-color: var(--accent);
 }
 
-.Item.Activated:not(.ReadOnly):not(.Selected) {
+.Item.Activated:not(.ReadOnly, .Selected) {
     background-color: var(--border);
 }
 

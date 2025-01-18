@@ -1,4 +1,4 @@
-import { FC, ReactNode, memo, useMemo, useReducer } from 'react';
+import { FC, ReactNode, memo, useReducer } from 'react';
 
 import { StyleContext, StyleMixerContext, styleMixerReducer } from '../context/styleMixer';
 

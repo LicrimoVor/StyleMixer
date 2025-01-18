@@ -5,6 +5,7 @@
 ._img_open {
     cursor: pointer;
 }
+
 ._img_open:hover {
     opacity: 0.9;
 }

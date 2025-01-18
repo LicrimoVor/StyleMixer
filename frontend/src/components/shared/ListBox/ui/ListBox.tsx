@@ -1,31 +1,32 @@
-import { memo, ReactNode, useEffect, useRef, useState } from 'react';
+import { memo, ReactNode, useEffect, useState } from 'react';
 import {Listbox as HListbox, } from '@headlessui/react'
 
 import './ListBox.css';
+import { typedMemo } from '@/utils/typedMemo';
 
-interface ListBoxItem {
-    value: any,
+interface ListBoxItem<T extends string> {
+    value: T,
     component?: ReactNode,
     readonly?: boolean,
     content?: string,
 }
 
-interface ListBoxProps {
+interface ListBoxProps<T extends string> {
     className?: string,
     rootClassName?: string,
-    data: ListBoxItem[],
-    selectedValue?: any,
-    defaultValue?: any,
+    data: ListBoxItem<T>[],
+    selectedValue?: T,
+    defaultValue?: T,
     readonly?: boolean,
     label?: string,
     textBtn?: string,
-    onChange: (value: any) => void,
+    onChange: (value: T) => void,
 }
 
 /**
  * Всплывающее окно с выбором
  */
-export const ListBox = memo((props: ListBoxProps) => {
+export const ListBox = typedMemo(<T extends string>(props: ListBoxProps<T>) => {
     const {
         className = '',
         rootClassName='',

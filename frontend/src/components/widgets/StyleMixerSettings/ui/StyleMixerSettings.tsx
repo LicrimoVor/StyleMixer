@@ -11,9 +11,9 @@ const DataModels: Record<'value', Model>[] = [
     { value: 'VGG19'},
 ]
 const DataSizes: Record<'value', Size>[] = [
-    { value: 128 },
-    { value: 256 },
-    { value: 512 }
+    { value: '128' },
+    { value: '256' },
+    { value: '512' }
 ]
 
 
@@ -48,7 +48,7 @@ export const StyleMixerSettings: FC <StyleMixerSettingsProps> = memo((
 
     return (
         <div style={{flexDirection:direction}} className={'StyleMixerSettings '+ className}>
-            <ListBox
+            <ListBox<Model>
                 data={DataModels}
                 onChange={onChangeModel}
                 selectedValue={settings.model}
@@ -56,11 +56,11 @@ export const StyleMixerSettings: FC <StyleMixerSettingsProps> = memo((
                 readonly={disabled}
                 rootClassName='SettingsListBox'
             />
-            <ListBox
+            <ListBox<Size>
                 data={DataSizes}
                 onChange={onChangeSize}
                 selectedValue={settings.size}
-                textBtn={String(settings.size)}
+                textBtn={settings.size}
                 readonly={disabled}
                 rootClassName='SettingsListBox'
             />

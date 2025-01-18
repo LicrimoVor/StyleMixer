@@ -21,8 +21,7 @@
 
 .StyleMixerRedactorViews {
     display: flex;
-    overflow-x: scroll;
-    overflow-y: hidden;
+    overflow: scroll hidden;
     gap: 18px;
     background-color: var(--dark-bg);
     border-radius: 20px;
@@ -36,7 +35,6 @@
     padding: 4px;
     border: none;
     border-radius: 16px;
-    outline: none;
     cursor: pointer;
 }
 

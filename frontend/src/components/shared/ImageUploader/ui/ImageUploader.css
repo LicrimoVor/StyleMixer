@@ -18,6 +18,7 @@
     background: #f3e95e;
     color: var(--bg-color);
 }
+
 .ImageUploader:not(.isError):hover{
     background: var(--accent);
     color: var(--bg-color);
@@ -28,14 +29,10 @@
     color: var(--bg-color);
 }
 
-.ImageUploader:not(.isDragging):not(.isError):not(:hover) {
-    background: var(--hint);
-}
-
 .ImageUploaderImage {
     width: 80px;   
 }
 
 .ImageUploader p {
-    margin: 0px;
+    margin: 0;
 }
