@@ -3,5 +3,11 @@
     align-items: center;
     justify-content: center;
     background-color: var(--light-bg);
-    height: 50px;
+    padding: 16px 8px;
+    border-radius: 8px;
+    gap: 8px;
+}
+
+.SettingsListBox {
+    width: 100%;
 }

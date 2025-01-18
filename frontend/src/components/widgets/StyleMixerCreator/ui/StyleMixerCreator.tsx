@@ -1,17 +1,22 @@
 import { FC, memo, useCallback, useEffect, useState, } from 'react';
 
-import { ImageUploader, ImageUploaderBtn } from '@/components/ui/ImageUploader';
+import { ImageUploader, ImageUploaderBtn } from '@/components/shared/ImageUploader';
 import Plus from '@/assets/plus.png';
 import './StyleMixerCreator.css';
 import { ImageEditable } from './ImageEditable';
+import { StyleMixerSettings } from '../../StyleMixerSettings';
+import { StyleSettings } from '@/entities/StyleSettings';
 
 
 interface StyleMixerCreatorProps {
     className?: string,
-    callback?: (content: File, style: File) => void,
+    callback?: (content: File, style: File, settings: StyleSettings) => void,
     refresh?: boolean,
 };
-
+const defaultSettings: StyleSettings = {
+    model: 'VGG16',
+    size: 128
+}
 
 /** Панель изменения стиля изображения */
 export const StyleMixerCreator: FC <StyleMixerCreatorProps> = memo((
@@ -24,6 +29,7 @@ export const StyleMixerCreator: FC <StyleMixerCreatorProps> = memo((
     } = props;
     const [style, setStyle] = useState<File>();
     const [content, setContent] = useState<File>();
+    const [settings, setSettings] = useState<StyleSettings>(defaultSettings);
 
     useEffect(() => {
         setStyle(undefined)
@@ -38,7 +44,7 @@ export const StyleMixerCreator: FC <StyleMixerCreatorProps> = memo((
     }, [setContent])
     const onSaveHandler = useCallback(() => {
         if (!style || !content || !callback) return;
-        callback(content, style)
+        callback(content, style, settings)
     }, [style, content, callback])
     
     return (
@@ -53,14 +59,19 @@ export const StyleMixerCreator: FC <StyleMixerCreatorProps> = memo((
                     </div>
                 }
             </div>
-
-            <button
-                className={'StyleMixerCreatorBtn ' + (style && content ? 'Ready' : 'notReady')}
-                onClick={onSaveHandler}
-            >
-                <img src={Plus}/>
-            </button>
-
+            <div className='StyleMixerCreatorMenu'>
+                <StyleMixerSettings
+                    direction='column'
+                    settings={settings}
+                    onChange={setSettings}
+                />
+                <button
+                    className={'StyleMixerCreatorBtn ' + (style && content ? 'Ready' : 'notReady')}
+                    onClick={onSaveHandler}
+                >
+                    <img src={Plus}/>
+                </button>
+            </div>
             <div className='StyleMixerCreatorUpload'>
                 <h3 className='StyleMixerCreatorTitle'>Style</h3>
                 {style ?

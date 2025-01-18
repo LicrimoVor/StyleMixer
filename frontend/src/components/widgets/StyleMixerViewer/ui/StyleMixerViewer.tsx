@@ -1,35 +1,41 @@
 import { FC, memo, useCallback, useState, } from 'react';
 
 import './StyleMixerViewer.css';
-import { useImageMixContext } from '@/stores/context/styleMixer';
-import { StyleMix, MixSettings } from '@/entities/StyleMixer';
+import { useStyleMixContext } from '@/stores/context/styleMixer';
+import { ImageMix, } from '@/entities/StyleMixer';
 import { createStyleMix } from '@/api/styleMix';
+import { StyleMixerSettings } from '../../StyleMixerSettings';
+import { Image } from '@/components/shared/Image';
+import download from '@/assets/download.png';
 
 interface StyleMixerViewerProps {
     className?: string,
-    styleMix: StyleMix,
-    defaultSettings: MixSettings
+    imageMix: ImageMix,
 };
 
-/** Отображение и взаимодействие со StyleMixer'ом */
+/** Отображение styleMix */
 export const StyleMixerViewer: FC <StyleMixerViewerProps> = memo((
     props: StyleMixerViewerProps
 ) => {
     const {
-        className,
-        styleMix,
+        className = '',
+        imageMix,
     } = props;
 
     const [isLoadinge, setIsLoading] = useState(true);
-    const { state, dispatch } = useImageMixContext()
+    const { state, dispatch } = useStyleMixContext()
     const createStyleMixBtn = useCallback(() => {
         // setIsLoading
         // createStyleMix().then(() => ());
     }, [])
 
     return (
-        <div className='StyleMixerViewer'>
-            <img src={imageMix.content} className='ImageEditableImg'/>
+        <div className={'StyleMixerViewer ' + className}>
+            <a href={imageMix.img} download='ImageMix' className='StyleMixerViewerDownload'>
+                <Image src={download} size={25}/>
+            </a>
+            <Image src={imageMix.img} size={120} open border={8}/>
+            <StyleMixerSettings disabled settings={imageMix.settings} direction='column'/>
         </div>
     );
 });

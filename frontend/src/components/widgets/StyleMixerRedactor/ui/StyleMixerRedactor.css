@@ -1,0 +1,48 @@
+.StyleMixerRedactor0 {
+    display: flex;
+    gap: 32px;
+    width: 100%;
+}
+
+.StyleMixerRedactor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+
+.StyleMixerRedactorImgs {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+}
+
+.StyleMixerRedactorViews {
+    display: flex;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    gap: 18px;
+    background-color: var(--dark-bg);
+}
+
+.StyleMixerRedactorBtn{
+    outline-color: transparent;
+    display: flex;
+    background: #26ca2057;
+    padding: 4px;
+    border: none;
+    border-radius: 16px;
+    outline: none;
+    cursor: pointer;
+}
+
+.StyleMixerRedactorBtn img {
+    width: 35px;
+    height: 35px;
+}
+
+.StyleMixerRedactorBtn:hover {
+    opacity: 0.6;
+}

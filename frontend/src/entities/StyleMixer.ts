@@ -1,13 +1,15 @@
-export type MixSettings = {
-  model: "VGG19";
-};
+import { StyleSettings } from "./StyleSettings";
 
 export type ImageMix = {
-  settings: MixSettings;
-  img: string;
+  settings: StyleSettings;
+  img?: string;
+  error?: string;
+  isLoading: boolean;
 };
 
 export type StyleMix = {
+  id: number;
+  isInited: boolean;
   content: string;
   style: string;
   mix: Array<ImageMix>;

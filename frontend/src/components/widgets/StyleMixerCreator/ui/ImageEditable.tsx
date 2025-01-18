@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { ImageUploaderBtn } from '@/components/ui/ImageUploader';
+import { ImageUploaderBtn } from '@/components/shared/ImageUploader';
 import './ImageEditable.css';
 
 

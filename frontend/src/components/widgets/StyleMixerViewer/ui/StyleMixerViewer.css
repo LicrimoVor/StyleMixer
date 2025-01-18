@@ -1,0 +1,24 @@
+.StyleMixerViewer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.StyleMixerViewerDownload {
+    text-decoration: none;
+    margin: 0;
+    padding: 1px 20px;
+
+    background-color: var(--star-stroke);
+    border-radius: 8px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.StyleMixerViewerDownload:hover {
+    opacity: 0.75;
+}

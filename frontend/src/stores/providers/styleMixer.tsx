@@ -1,12 +1,14 @@
 import { FC, ReactNode, memo, useMemo, useReducer } from 'react';
 
-import { StyleMix } from '@/entities/StyleMixer';
-import { StyleMixerContext, styleMixerReducer } from '../context/styleMixer';
+import { StyleContext, StyleMixerContext, styleMixerReducer } from '../context/styleMixer';
 
 interface StyleMixerProviderProps {
     children: ReactNode,
 };
-const initialState: StyleMix[] = [];
+const initialState: StyleContext = {
+    isInited: false,
+    styles: []
+};
 
 /** Провайдер миксера изображений */
 export const StyleMixerProvider: FC<StyleMixerProviderProps> = memo((props) => {

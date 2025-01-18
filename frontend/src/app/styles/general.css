@@ -1,7 +1,9 @@
 .App {
   min-height: 100vh;
-  min-width: 100vw;
+  min-width: 99vw;
   overflow: auto;
+  justify-content: center;
+  display: flex;
 }
 
 body {

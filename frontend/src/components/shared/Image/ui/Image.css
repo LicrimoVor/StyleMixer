@@ -1,0 +1,10 @@
+._img {
+    display: flex;
+}
+
+._img_open {
+    cursor: pointer;
+}
+._img_open:hover {
+    opacity: 0.9;
+}

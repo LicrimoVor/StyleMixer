@@ -1,16 +1,18 @@
-import { FC, memo, useCallback, useState, } from 'react';
+import { FC, memo, useCallback, useEffect, useState, } from 'react';
 
-import { useImageMixContext } from '@/stores/context/styleMixer';
+import { useStyleMixContext } from '@/stores/context/styleMixer';
 import { createStyleMix } from '@/api/styleMix';
-import {ImageMix, MixSettings} from '@/entities/StyleMixer'
+import {ImageMix, MixSettings, StyleMix} from '@/entities/StyleMixer'
 
 
 import './StyleMixerPanel.css';
-import { ImageUploader } from '@/components/ui/ImageUploader';
+import { ImageUploader } from '@/components/shared/ImageUploader';
 import { StyleMixerCreator } from '@/components/widgets/StyleMixerCreator';
 import { imgToBase64 } from '@/utils/imgToBase64';
-import { StyleMixerViewer } from '@/components/widgets/StyleMixerViewer';
 import { StyleMixerSettings } from '@/components/widgets/StyleMixerSettings';
+import { StyleMixerRedactor } from '@/components/widgets/StyleMixerRedactor';
+import { Skeleton } from '@/components/shared/Skeleton';
+import { StyleSettings } from '@/entities/StyleSettings';
 
 
 interface StyleMixerPanelProps {
@@ -22,31 +24,51 @@ export const StyleMixerPanel: FC <StyleMixerPanelProps> = memo((
     props: StyleMixerPanelProps
 ) => {
     const {
-        className,
+        className = '',
     } = props;
-    const { state, dispatch } = useImageMixContext();
-    const [isLoading, setIsLoading] = useState(false);
-    const [settings, setSettings] = useState<MixSettings>({ model: 'VGG19'})
+    const { state, dispatch } = useStyleMixContext();
     const [refresh, setRefresh] = useState(false);
 
-    const onCreateStyleMix = useCallback((content: File, style: File) => {
-        setIsLoading(true);
+    useEffect(() => {
+        if (state.isInited === false) {
+
+        }
+    }, [])
+
+    const onCreateStyleMix = useCallback((content: File, style: File, settings: StyleSettings) => {
         setRefresh(!refresh)
         
-        Promise.all<string|ArrayBuffer>([
+        Promise.all<string>([
             imgToBase64(content),
             imgToBase64(style),
         ]).then((values) => {
-            dispatch({type: 'create', payload: {content: values[0], style: values[1]}})
-            setIsLoading(false)
+            dispatch({
+                type: 'create',
+                payload: { content: values[0], style: values[1] },
+                otherPayload: settings,
+            })
         })
     }, [refresh, setRefresh])
 
     return (
-        <div className='StyleMixerPanel'>
-            <StyleMixerSettings settings={settings} onChange={setSettings}/>
+        <div className={'StyleMixerPanel ' + className}>
             <StyleMixerCreator callback={onCreateStyleMix} refresh={refresh} />
-            {state.map((styleMix, i) => <StyleMixerViewer defaultSettings={settings} styleMix={styleMix} key={i}/>)}
+            {/* {
+                state.isInited ?
+                    <div className='StyleMixerPanelRedactors'>
+                        {state.styles.map((styleMix, i) => <StyleMixerRedactor defaultSettings={settings} styleMix={styleMix} key={i}/>)}
+                    </div> :
+                    <div className='StyleMixerPanelRedactors'>
+                        {[...Array(5).keys()].map((i) => <Skeleton key={i}/>)}
+                    </div>
+            } */}
+            <div className='StyleMixerPanelRedactors'>
+                {state.styles.map((styleMix, i) => <StyleMixerRedactor defaultSettings={styleMix.mix[0].settings} styleMix={styleMix} key={i}/>)}
+            </div> :
+            {/* <div className='StyleMixerPanelRedactors'>
+                {[...Array(1).keys()].map((i) => <Skeleton key={i}/>)}
+            </div>
+             */}
         </div>
     );
 });
