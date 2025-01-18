@@ -1,0 +1,41 @@
+.ImageUploader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid var(--light-bg);
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 64px;
+    width: 120px;
+    height: 120px;
+}
+
+.ImageUploader.isError {
+    background: #554545;
+}
+
+.ImageUploader.isError:hover{
+    background: #f3e95e;
+    color: var(--bg-color);
+}
+.ImageUploader:not(.isError):hover{
+    background: var(--accent);
+    color: var(--bg-color);
+} 
+
+.ImageUploader.isDragging {
+    background: var(--accent);
+    color: var(--bg-color);
+}
+
+.ImageUploader:not(.isDragging):not(.isError):not(:hover) {
+    background: var(--hint);
+}
+
+.ImageUploaderImage {
+    width: 80px;   
+}
+
+.ImageUploader p {
+    margin: 0px;
+}

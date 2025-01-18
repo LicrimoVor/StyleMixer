@@ -1,0 +1,32 @@
+* {
+    --font: "Ubuntu", sans-serif;
+    --font-s: 12px / 20px var(--font);
+    --font-m: 16px / 24px var(--font);
+    --font-l: 24px / 32px var(--font);
+
+    /* dark colors */
+    --dark-bg: #090F11;
+    --bg-color: #0C1214;
+    --light-bg: #151C1F;
+    --text: #DBDBDB;
+    --hint: #555555;
+    --cancel: #D95757;
+    --save: #6CD98B;
+    --icon: #74A2B2;
+    --accent: #5ED3F3;
+    --border: #628a97;
+
+    /* skeleton */
+    --skeleton-shadow: #001486;
+    --skeleton-color: #0412d4;
+
+    /* card */
+    --card-bg: #113;
+
+    /* popups */
+    --popup-bg: #337a42;
+    --popup-shadow: #7ece8e;
+
+    /* star */
+    --star-stroke: #178b2c;
+}

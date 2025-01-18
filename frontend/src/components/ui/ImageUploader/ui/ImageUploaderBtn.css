@@ -1,0 +1,40 @@
+.ImageUploaderBtn {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    align-items: center;
+    border: 1px solid var(--light-bg);
+    border-radius: 8px;
+    padding: 8px;
+}
+
+.ImageUploaderBtn:not(.disabled) {
+    cursor: pointer;
+}
+
+.ImageUploaderBtn:hover:not(.disabled){
+    background: var(--accent);
+    color: var(--bg-color);
+}
+.ImageUploaderBtn.isDragging {
+    background: var(--accent);
+    color: var(--bg-color);
+}
+
+.ImageUploaderBtn.disabled {
+    cursor: default;
+    background: var(--hint);
+    opacity: 0.7;
+}
+
+.ImageUploaderBtn:not(.isDragging):not(:hover) {
+    background: var(--hint);
+}
+
+.ImageUploaderBtnImage {
+    width: 24px;   
+}
+
+.ImageUploaderBtn p {
+    margin: 0px;
+}

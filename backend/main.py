@@ -1,8 +1,10 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Response
+
+from models.image_mix import ImageMix
 
 app = FastAPI()
 
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+@app.post("/image")
+async def image_mix(props: ImageMix):
+    return Response(content=props.style, media_type="image/png")

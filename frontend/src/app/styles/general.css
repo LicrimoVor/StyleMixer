@@ -1,0 +1,29 @@
+.App {
+  min-height: 100vh;
+  min-width: 100vw;
+  overflow: auto;
+}
+
+body {
+  background: var(--bg-color);
+  font: var(--font-m);
+  color: var(--text);
+  display: flex;
+  margin: 0px;
+}
+
+*::-webkit-scrollbar {
+  width: 12px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--light-bg);
+  border-radius: 20px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--accent);
+  border-radius: 20px;
+  border: 1px solid var(--icon);
+}
