@@ -18,6 +18,17 @@
     justify-content: center;
 }
 
+.StyleMixerViewerBtnError {
+    text-decoration: none;
+    margin: 0;
+    padding: 1px 20px;
+    background-color: #c9101065;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .StyleMixerViewerDownload:hover {
     opacity: 0.75;
 }

@@ -26,14 +26,20 @@ export const StyleMixerViewer: FC <StyleMixerViewerProps> = memo((
     if (imageMix.isLoading) {
         InnerElement = (
             <>
+                <Skeleton width={65} height={27} border='8px' />
                 <Skeleton width={150} height={150} border='8px' />
             </>
         )
     } else if (imageMix.error) {
         InnerElement = (
-            <div className='StyleMixerViewerError'>
-                {imageMix.error}
-            </div>
+            <>
+                <div className='StyleMixerViewerBtnError'>
+                    <Image src={download} size={25}/>
+                </div>
+                <div className='StyleMixerViewerError'>
+                    <p>{imageMix.error}</p>
+                </div>
+            </>
         )
     } else {
         InnerElement = (

@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 import { ImageUploaderBtn } from '@/components/shared/ImageUploader';
-import './ImageEditable.css';
+import { Image } from '@/components/shared/Image';
 
 
 interface ImageEditableProps {
@@ -18,8 +18,8 @@ export const ImageEditable: FC<ImageEditableProps> = ((props: ImageEditableProps
 
 
     return (
-        <div className='ImageEditable'>
-            <img src={image} className='ImageEditableImg'/>
+        <div>
+            <Image src={image} size={250} border={8}/>
             <ImageUploaderBtn callback={callback} label='Изменить'/>
         </div>
     )

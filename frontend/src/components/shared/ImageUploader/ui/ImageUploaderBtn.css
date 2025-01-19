@@ -28,7 +28,7 @@
     opacity: 0.7;
 }
 
-.ImageUploaderBtn:not(.isDragging):hover {
+.ImageUploaderBtn:not(.isDragging):not(:hover) {
     background: var(--hint);
 }
 

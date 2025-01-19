@@ -13,7 +13,11 @@ type ResponseImageMix = Omit<ImageMix, "isLoading" | "id">;
 export const createImageMix = async ({ styleMix, settings }: PropsImageMix) =>
   axios.post<ResponseImageMix>(
     apiUrl + "/image",
-    { content: styleMix.content, style: styleMix.style, settings },
+    {
+      content: styleMix.content,
+      style: styleMix.style,
+      settings: JSON.stringify(settings),
+    },
     {
       headers: {
         "content-type": "multipart/form-data",

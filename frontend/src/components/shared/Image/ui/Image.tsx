@@ -29,10 +29,14 @@ export const Image: FC<ImageProps> = memo((
         }
     }, [open])
 
-    return <img
-        className={'_img ' + (open? '_img_open ': '') + className}
-        src={src}
-        style={{ width: size, height: size, borderRadius: border }}
-        onClick={onOpenImg}
-    />
+    return (
+        <div style={{ width: size, height: size }} className='_img_wrapper'>
+            <img
+                className={'_img ' + (open? '_img_open ': '') + className}
+                src={src}
+                style={{ maxWidth: size, maxHeight: size, borderRadius: border }}
+                onClick={onOpenImg}
+            />
+        </div>
+    )
 });

@@ -1,5 +1,6 @@
 ._img {
     display: flex;
+    background-size: contain;
 }
 
 ._img_open {
@@ -8,4 +9,10 @@
 
 ._img_open:hover {
     opacity: 0.9;
+}
+
+._img_wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

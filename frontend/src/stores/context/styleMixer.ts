@@ -32,8 +32,8 @@ export const styleMixerReducer: Reducer<StyleContext, StyleMixerAction> = (
   switch (action.type) {
     case "init": {
       const styles: StyleMix[] = action.payload.map(
-        (style: StyleMix, i: number) => ({
-          ...style,
+        (val: StyleMix, i: number) => ({
+          ...val,
           id: i,
           isInited: true,
         })
