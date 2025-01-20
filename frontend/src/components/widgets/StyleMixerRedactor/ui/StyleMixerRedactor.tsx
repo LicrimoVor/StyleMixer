@@ -1,14 +1,16 @@
-import { FC, memo, useCallback, useEffect, useRef, useState, } from 'react';
+import { FC, memo, useCallback, useState, } from 'react';
 
 import Plus from '@/assets/plus.png';
 import { useStyleMixContext } from '@/stores/context/styleMixer';
 import { Image } from '@/components/shared/Image';
 import { StyleSettings } from '@/entities/StyleSettings';
 import { StyleMix } from '@/entities/StyleMixer';
+import { createImageMix } from '@/api/createImageMix';
+import { useInitialEffect } from '@/utils/useInitialEffect';
+
 import { StyleMixerViewer } from '../../StyleMixerViewer';
 import { StyleMixerSettings } from '../../StyleMixerSettings';
 import './StyleMixerRedactor.css';
-import { createImageMix } from '@/api/createImageMix';
 
 interface StyleMixerRedactorProps {
     className?: string,
@@ -25,17 +27,11 @@ export const StyleMixerRedactor: FC <StyleMixerRedactorProps> = memo((
         styleMix,
     } = props;
 
-    const isInitedRef = useRef(styleMix.isInited);
     const [isLoading, setIsLoading] = useState(false);
     const [settings, setSettings] = useState<StyleSettings>(defaultSettings);
     const { dispatch } = useStyleMixContext()
 
-    useEffect(() => {
-        if (!isInitedRef.current) {
-            isInitedRef.current = true
-            onCreateMix()
-        }
-    }, [isInitedRef])
+    useInitialEffect(()=> onCreateMix());
 
     const onCreateMix = useCallback(() => {
         if (isLoading) return;
@@ -51,14 +47,16 @@ export const StyleMixerRedactor: FC <StyleMixerRedactorProps> = memo((
                 dispatch({ type: 'addMix', id: styleMix.id, payload: imageMix })
             }).catch((reason) => {
                 setIsLoading(false)
+                const error = reason.response?.data?.detail || reason.response?.data?.error || reason.message
                 const imageMix = {
                     settings,
-                    error: reason.message,
+                    error,
                     isLoading: false,
                 }
                 dispatch({ type: 'addMix', id: styleMix.id, payload: imageMix })
         })
     }, [settings, styleMix, dispatch, setIsLoading, isLoading,])
+    
 
     return (
         <div className={'StyleMixerRedactor0 ' + className}>

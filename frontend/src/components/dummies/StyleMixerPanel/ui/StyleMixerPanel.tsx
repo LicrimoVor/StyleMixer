@@ -1,14 +1,16 @@
-import { FC, memo, useCallback, useEffect, useMemo, useRef, useState, } from 'react';
+import { FC, memo, useCallback, useMemo, useState, } from 'react';
 
 import { useStyleMixContext } from '@/stores/context/styleMixer';
-import { StyleMixerCreator } from '@/components/widgets/StyleMixerCreator';
 import { imgToBase64 } from '@/utils/imgToBase64';
+import { useInitialEffect } from '@/utils/useInitialEffect';
 import { StyleMixerRedactor } from '@/components/widgets/StyleMixerRedactor';
 import { Skeleton } from '@/components/shared/Skeleton';
+import { StyleMixerCreator } from '@/components/widgets/StyleMixerCreator';
 import { StyleSettings } from '@/entities/StyleSettings';
 import { DefaultStyleSettings } from '@/config/const';
-import './StyleMixerPanel.css';
 import { getStyleMixs } from '@/api/getStyleMixs';
+
+import './StyleMixerPanel.css';
 
 interface StyleMixerPanelProps {
     className?: string,
@@ -39,23 +41,19 @@ export const StyleMixerPanel: FC <StyleMixerPanelProps> = memo((
     } = props;
 
     const { state, dispatch } = useStyleMixContext();
-    const isInitedRef = useRef(state.isInited);
     const [settings, setSettings] = useState<StyleSettings>(DefaultStyleSettings);
     const [refresh, setRefresh] = useState(false);
 
-    useEffect(() => {
-        if (!isInitedRef.current) {
-            isInitedRef.current = true;
+    useInitialEffect(() => {
             getStyleMixs().then((value) => {
                 dispatch({
                     type: 'init',
-                    payload: value,
+                    payload: value.data || [],
                 })
             }).catch(() => {
                 dispatch({type: 'init', payload: []})
             })
-        }
-    }, [isInitedRef.current])
+    })
 
     const onCreateStyleMix = useCallback((content: File, style: File, settings: StyleSettings) => {
         setRefresh(!refresh)

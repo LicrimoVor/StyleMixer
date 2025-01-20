@@ -1,0 +1,2 @@
+Запуск:
+```uvicorn main:app```

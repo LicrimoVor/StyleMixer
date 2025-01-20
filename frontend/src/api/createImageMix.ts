@@ -19,6 +19,7 @@ export const createImageMix = async ({ styleMix, settings }: PropsImageMix) =>
       settings: JSON.stringify(settings),
     },
     {
+      withCredentials: true,
       headers: {
         "content-type": "multipart/form-data",
       },
