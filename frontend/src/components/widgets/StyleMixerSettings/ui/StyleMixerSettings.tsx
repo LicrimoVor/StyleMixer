@@ -19,7 +19,8 @@ const DataSizes: Record<'value', Size>[] = [
 
 interface StyleMixerSettingsProps {
     className?: string,
-    direction?: 'row'|'column',
+    direction?: 'row' | 'column',
+    directionMenu?: 'bottom' | 'up',
     settings: StyleSettings,
     disabled?: boolean,
     onChange?: (settings: StyleSettings) => void,
@@ -31,7 +32,8 @@ export const StyleMixerSettings: FC <StyleMixerSettingsProps> = memo((
 ) => {
     const {
         className,
-        direction='row',
+        direction = 'row',
+        directionMenu,
         settings,
         onChange,
         disabled,
@@ -55,6 +57,7 @@ export const StyleMixerSettings: FC <StyleMixerSettingsProps> = memo((
                 textBtn={settings.model}
                 readonly={disabled}
                 rootClassName='SettingsListBox'
+                direction={directionMenu}
             />
             <ListBox<Size>
                 data={DataSizes}
@@ -63,6 +66,7 @@ export const StyleMixerSettings: FC <StyleMixerSettingsProps> = memo((
                 textBtn={settings.size}
                 readonly={disabled}
                 rootClassName='SettingsListBox'
+                direction={directionMenu}
             />
         </div>
     );

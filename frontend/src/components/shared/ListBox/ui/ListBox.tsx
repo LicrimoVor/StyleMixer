@@ -1,5 +1,5 @@
-import { memo, ReactNode, useEffect, useState } from 'react';
-import {Listbox as HListbox, } from '@headlessui/react'
+import { ReactNode, useEffect, useState } from 'react';
+import {Listbox as HListbox } from '@headlessui/react'
 
 import './ListBox.css';
 import { typedMemo } from '@/utils/typedMemo';
@@ -18,6 +18,7 @@ interface ListBoxProps<T extends string> {
     selectedValue?: T,
     defaultValue?: T,
     readonly?: boolean,
+    direction?: 'bottom' | 'up',
     label?: string,
     textBtn?: string,
     onChange: (value: T) => void,
@@ -36,6 +37,7 @@ export const ListBox = typedMemo(<T extends string>(props: ListBoxProps<T>) => {
         label,
         selectedValue = defaultValue || data[0],
         textBtn,
+        direction = 'bottom',
         onChange,
     } = props;
 
@@ -64,7 +66,7 @@ export const ListBox = typedMemo(<T extends string>(props: ListBoxProps<T>) => {
                     {textButton}
                 </HListbox.Button>
                 <HListbox.Options
-                    className={'ListBoxMenu'}
+                    className={'ListBoxMenu ' + direction}
                 >
                     {data.map((item) => (
                         <HListbox.Option

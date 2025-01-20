@@ -1,10 +1,10 @@
 from typing import Annotated
 from io import BytesIO
-import base64
 
 from fastapi import APIRouter, Form, Request, Response
 from sqlalchemy import select
 from sqlalchemy.orm import Session
+from sqlalchemy_file import File
 from PIL import ImageFilter
 
 from schemas.style_mix import StyleMixSchema
@@ -25,15 +25,16 @@ def create_or_get(img: str, session: Session) -> tuple[Image, bool]:
     pillow = base64_to_pil(img)
     buffer = BytesIO()
     pillow.save(buffer, format="JPEG")
-
     hash_img = hash_buff(buffer.getvalue())
+
     statement = select(Image).where(Image.hash == hash_img)
     if model := session.scalar(statement):
         return model, False
     else:
-        model = Image(img=pillow, hash=hash_img)
+        filename = hash_img + ".jpeg"
+        file = File(buffer.getvalue(), filename=filename, content_type="image/jpeg")
+        model = Image(img=file, hash=hash_img)
         session.add(model)
-        session.commit()
         return model, True
 
 
@@ -52,7 +53,7 @@ async def create_image_mix(
     style_model, is_created_style = create_or_get(form_data.style, session)
 
     if is_created_content or is_created_style:
-        style_mix = StyleMix(user=user, content=content_model, style_id=style_model)
+        style_mix = StyleMix(user=user, content=content_model, style=style_model)
         session.add(style_mix)
     else:
         style_mix_statement = select(StyleMix).where(StyleMix.user == user)
@@ -65,11 +66,13 @@ async def create_image_mix(
     img.save(buff_img, format="JPEG")
     # !!!!!!!!!!!!!!!!!!!!!!!!!
 
+    filename = "mix_" + hash_buff(buff_img.getvalue()) + ".jpeg"
+    file = File(buff_img.getvalue(), filename=filename, content_type="image/jpeg")
     image_mix = ImageMix(
-        img=buff_img.getvalue(),
+        img=file,
         settings=form_data.settings,
-        user_id=user.id,
-        style_mix_id=style_mix.id,
+        user=user,
+        style_mix=style_mix,
     )
     session.add(image_mix)
     session.commit()

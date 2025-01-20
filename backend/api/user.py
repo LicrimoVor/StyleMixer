@@ -11,6 +11,17 @@ user_router = APIRouter(prefix="/user")
 MAX_AGE_TOKEN = 30 * 24 * 3600
 
 
+@user_router.get("")
+async def profile(request: Request, session: SessionDep):
+    if token := request.cookies.get(COOKIE_ANONYMUS_SESSIONKEY):
+        statement = select(User).where(User.token == token)
+        user = session.scalar(statement)
+        if user is not None:
+            return Response(status_code=200)
+
+    return Response(status_code=401)
+
+
 @user_router.post("/reg")
 async def register(response: Response, request: Request, session: SessionDep):
     if token := request.cookies.get(COOKIE_ANONYMUS_SESSIONKEY):

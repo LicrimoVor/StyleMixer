@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, List
 
 from sqlalchemy import String, Column
 from sqlalchemy.orm import Mapped, relationship
-from sqlalchemy_file import FileField
+from sqlalchemy_file import FileField, ImageField
 
 from core.database import Base
 
@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 class Image(Base):
     """Фотография."""
 
-    img = Column(FileField, nullable=False)
+    img = Column(ImageField, nullable=False)
     hash = Column(String, unique=True, nullable=False)
     style_mix_contents: Mapped[List[StyleMix]] = relationship(
         back_populates="content",

@@ -9,15 +9,15 @@ import './styles/font.css'
 import './styles/theme.css';
 import './styles/general.css';
 import { cookieKeyToken } from '@/config/const';
+import { checkToken } from '@/api/checkToken';
 
 function App() {
 
   const [cookies, setCookie, _] = useCookies()
   useInitialEffect(() => {
-    console.log(cookies)
-    if (!cookies[cookieKeyToken]) {
-      createToken().then(() => setCookie(cookieKeyToken, true))
-    }
+    const callback = () => createToken().then(() => setCookie(cookieKeyToken, true));
+    if (!cookies[cookieKeyToken]) callback()
+    else checkToken().catch(callback)
   })
   
 

@@ -6,3 +6,4 @@ sqlite.db
 build/
 __serve/
 __pycache__/
+storage/

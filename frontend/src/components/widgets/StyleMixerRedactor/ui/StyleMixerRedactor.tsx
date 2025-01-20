@@ -72,7 +72,7 @@ export const StyleMixerRedactor: FC <StyleMixerRedactorProps> = memo((
                     </button>
                     <Image src={styleMix.style} size={150} border={8} open/>
                 </div>
-                <StyleMixerSettings settings={settings} onChange={setSettings} />
+                <StyleMixerSettings settings={settings} onChange={setSettings} directionMenu='up'/>
             </div>
             <div className='StyleMixerRedactorViews'>
                 {styleMix.mix.map((mix, i) => <StyleMixerViewer imageMix={mix} key={i} />)}

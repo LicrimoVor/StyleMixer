@@ -1,9 +1,12 @@
 from typing import Any
 from typing_extensions import Annotated
+import os
 
 from fastapi import Depends, HTTPException
 from sqlalchemy import Column, Integer, create_engine, inspect
 from sqlalchemy.orm import declarative_base, declared_attr, sessionmaker, Session
+from sqlalchemy_file.storage import StorageManager
+from libcloud.storage.drivers.local import LocalStorageDriver
 
 from settings import DATABASE_URL
 
@@ -38,6 +41,10 @@ class MetaBase:
 Base = declarative_base(cls=MetaBase)
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(engine)
+
+os.makedirs("./storage/images", 0o777, exist_ok=True)
+container = LocalStorageDriver("./storage").get_container("images")
+StorageManager.add_storage("default", container)
 
 
 def get_session():

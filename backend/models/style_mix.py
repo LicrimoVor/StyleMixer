@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, List
 
 from sqlalchemy import Column, PickleType, ForeignKey, Integer
 from sqlalchemy.orm import Mapped, relationship, validates, reconstructor
-from sqlalchemy_file import FileField
+from sqlalchemy_file import FileField, ImageField
 
 from schemas.style_mix import ImageSettingsSchema
 from core.database import Base
@@ -17,8 +17,8 @@ if TYPE_CHECKING:
 class ImageMix(Base):
     """Конкретный экземпляр микса."""
 
-    img = Column(FileField, nullable=False)
-    settings = Column(PickleType, nullable=False)
+    img = Column(ImageField, nullable=False)
+    settings: ImageSettingsSchema = Column(PickleType, nullable=False)
 
     user_id: Mapped[int] = Column(Integer, ForeignKey("user.id"))
     user: Mapped[User] = relationship(back_populates="image_mixs")
@@ -27,7 +27,10 @@ class ImageMix(Base):
     style_mix: Mapped[StyleMix] = relationship(back_populates="mixs")
 
     @validates("settings")
-    def validate_name(self, key, value):
+    def validate_settings(self, key, value):
+        if isinstance(value, ImageSettingsSchema):
+            return value
+
         ImageSettingsSchema(**value)
         return value
 

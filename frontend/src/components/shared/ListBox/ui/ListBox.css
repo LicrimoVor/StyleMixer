@@ -60,3 +60,7 @@
     border-radius: 18px;
     overflow: hidden;
 }
+
+.ListBoxMenu.up {
+    bottom: 100%;
+}
