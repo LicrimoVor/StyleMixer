@@ -1,0 +1,20 @@
+.Popover {
+    position: relative;
+    display: inline-block;
+}
+
+.PopoverMenu {
+    position: absolute;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border);
+    background-color: var(--dark-bg);
+    border-radius: 18px;
+    overflow: hidden;
+    padding: 5px 12px;
+}
+
+.PopoverMenu.up {
+    bottom: 100%;
+}

@@ -32,6 +32,16 @@ const SkeletonRedactor: FC = memo(() => (
 ))
 
 
+const SettingsDescription = memo(() => (
+    <div className='Card'>
+        <h3 style={{margin: 0}}>Settings</h3>
+        <p style={{margin: 0}}>m - model (архитектура модели)</p>
+        <p style={{margin: 0}}>s - size (размер изображения)</p>
+        <p style={{margin: 0}}>a - alpha (коэффициент стилизации)</p>
+    </div>
+))
+
+
 /** Панель изменения стиля изображения */
 export const StyleMixerPanel: FC <StyleMixerPanelProps> = memo((
     props: StyleMixerPanelProps
@@ -83,16 +93,20 @@ export const StyleMixerPanel: FC <StyleMixerPanelProps> = memo((
 
     return (
         <div className={'StyleMixerPanel ' + className}>
-            <StyleMixerCreator callback={onCreateStyleMix} refresh={refresh} />
+            <div className='StyleMixerPanelHead'>
+                <SettingsDescription />
+                <StyleMixerCreator
+                    className='StyleMixerPanelHeadCreator'
+                    callback={onCreateStyleMix}
+                    refresh={refresh}
+                />
+            </div>
             <div className='StyleMixerPanelRedactors'>
                 {state.isInited ?
                     Views:
                     [...Array(2).keys()].map((i) => <SkeletonRedactor key={i}/>)
                 }
             </div>
-                
-            
-            
         </div>
     );
 });

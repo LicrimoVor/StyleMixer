@@ -4,4 +4,5 @@ export type Size = "128" | "256" | "512";
 export interface StyleSettings {
   model: Model;
   size: Size;
+  alpha: number;
 }

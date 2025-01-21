@@ -4,12 +4,13 @@ import { useCookies } from 'react-cookie';
 import { Header } from '@/components/layouts/Header';
 import { createToken } from '@/api/createToken';
 import { useInitialEffect } from '@/utils/useInitialEffect';
+import { cookieKeyToken } from '@/config/const';
+import { checkToken } from '@/api/checkToken';
+
 import { AppRouter } from './router/Router'
 import './styles/font.css'
 import './styles/theme.css';
 import './styles/general.css';
-import { cookieKeyToken } from '@/config/const';
-import { checkToken } from '@/api/checkToken';
 
 function App() {
 

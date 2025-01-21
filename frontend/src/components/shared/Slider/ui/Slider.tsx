@@ -1,4 +1,4 @@
-import { FC, memo, useCallback, useState } from 'react';
+import { FC, memo, useCallback } from 'react';
 import { default as RcSlider } from 'rc-slider';
 
 import './Slider.css';
@@ -11,7 +11,8 @@ interface SliderProps {
     onChangeComplete?: (value: number) => void;
     min?: number
     max?: number,
-
+    step?: number,
+    value?: number,
 };
 
 /** Загрузка изображения */
@@ -20,29 +21,34 @@ export const Slider: FC<SliderProps> = memo((
 ) => {
     const {
         className = '',
-        // onChange,
+        value,
+        max,
+        min,
+        step,
+        onChange,
         onChangeComplete,
     } = props;
 
-    const [val, setVal] = useState([0, 1])
+    const onChangeWrapper = useCallback((value: number | number[]) => {
+        if (!onChange || Array.isArray(value)) return
+        else onChange(value);
+    }, [onChange])
 
-    const onChange = useCallback((val_: number[]) => {
-        if (val_[0] - val[0] > 0.005) setVal([val_[0], 1-val_[0]])
-        else setVal([1-val_[1], val_[1]])
-    }, [setVal]) 
+    const onChangeCompleteWrapper = useCallback((value: number | number[]) => {
+        if (!onChangeComplete || Array.isArray(value)) return
+        else onChangeComplete(value);
+    }, [onChangeComplete])
 
-    
+
     return (
         <div className={'Slider ' + className}>
-            {val[0] + "  " + val[1]}
             <RcSlider
-                value={val}
-                range
-                min={0}
-                max={1}
-                step={0.01}
-                onChange={onChange}
-                // onChangeComplete={onChangeComplete}
+                value={value}
+                min={min}
+                max={max}
+                step={step}
+                onChange={onChangeWrapper}
+                onChangeComplete={onChangeCompleteWrapper}
             />
         </div>
     )

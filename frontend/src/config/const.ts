@@ -5,4 +5,5 @@ export const cookieKeyToken = "__token_session";
 export const DefaultStyleSettings: StyleSettings = {
   model: "VGG16",
   size: "128",
+  alpha: 0.5,
 };
