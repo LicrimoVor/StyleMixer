@@ -19,7 +19,9 @@ jobs:
           cd ./backend
           pip install flake8
       - name: Lint PEP8
-        run: flake8
+        run: |
+          cd ./backend
+          flake8
 
   test_frontend:
       runs-on: ubuntu-latest
@@ -36,6 +38,7 @@ jobs:
           npm ci
       - name: Lint TS and CSS
         run: |
+          cd ./frontend
           npm run lint:ts
           npm run lint:css
 
