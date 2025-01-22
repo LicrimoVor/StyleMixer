@@ -49,16 +49,15 @@ export const styleMixerReducer: Reducer<StyleContext, StyleMixerAction> = (
     case "create": {
       const styleMixer: StyleMix = action.payload;
       styleMixer.mixs = [];
-      if (state.styles.length == 0) styleMixer.id = 1;
+      if (state.styles.length == 0) styleMixer.id = 0;
       else styleMixer.id = state.styles[state.styles.length - 1].id + 1;
+
       styleMixer.isInited = false;
       return { ...state, styles: [...state.styles, styleMixer] };
     }
 
     case "addMix": {
-      if (action.id == undefined || action.id >= state.styles.length) {
-        return state;
-      }
+      if (!action.id) return state;
 
       return {
         isInited: true,

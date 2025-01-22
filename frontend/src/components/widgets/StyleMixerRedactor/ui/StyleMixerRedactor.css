@@ -1,4 +1,4 @@
-.StyleMixerRedactor0 {
+.StyleMixerRedactorRoot {
     display: flex;
     gap: 16px;
     width: 100%;
@@ -64,6 +64,7 @@
     border-radius: 4px;
     cursor: pointer;
 }
+
 .StyleMixerRedactorDelete:hover {
     opacity: 0.8;
 }

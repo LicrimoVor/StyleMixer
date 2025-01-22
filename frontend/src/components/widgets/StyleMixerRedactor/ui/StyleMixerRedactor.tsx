@@ -1,24 +1,24 @@
-import { FC, memo, useCallback, useState, } from 'react';
+import { FC, memo, useCallback, useState, } from 'react'
 
-import Plus from '@/assets/plus.png';
-import Trash from '@/assets/trash.png';
-import { useStyleMixContext } from '@/stores/context/styleMixer';
-import { Image } from '@/components/shared/Image';
-import { StyleSettings } from '@/entities/StyleSettings';
-import { ImageMix, StyleMix } from '@/entities/StyleMixer';
-import { createImageMix } from '@/api/createImageMix';
-import { deleteStyleMix } from '@/api/delStyleMixs';
-import { useInitialEffect } from '@/utils/useInitialEffect';
+import Plus from '@/assets/plus.png'
+import Trash from '@/assets/trash.png'
+import { useStyleMixContext } from '@/stores/context/styleMixer'
+import { Image } from '@/components/shared/Image'
+import { StyleSettings } from '@/entities/StyleSettings'
+import { ImageMix, StyleMix } from '@/entities/StyleMixer'
+import { createImageMix } from '@/api/createImageMix'
+import { deleteStyleMix } from '@/api/delStyleMixs'
+import { useInitialEffect } from '@/utils/useInitialEffect'
 
-import { StyleMixerViewer } from '../../StyleMixerViewer';
-import { StyleMixerSettings } from '../../StyleMixerSettings';
-import './StyleMixerRedactor.css';
+import { StyleMixerViewer } from '../../StyleMixerViewer'
+import { StyleMixerSettings } from '../../StyleMixerSettings'
+import './StyleMixerRedactor.css'
 
 interface StyleMixerRedactorProps {
     className?: string,
     defaultSettings: StyleSettings,
     styleMix: StyleMix,
-};
+}
 
 
 /** Редактирование и создание новых styleMix */
@@ -29,18 +29,18 @@ export const StyleMixerRedactor: FC <StyleMixerRedactorProps> = memo((
         className = '',
         defaultSettings,
         styleMix,
-    } = props;
+    } = props
 
-    const [isLoading, setIsLoading] = useState(false);
-    const [settings, setSettings] = useState<StyleSettings>(defaultSettings);
+    const [isLoading, setIsLoading] = useState(false)
+    const [settings, setSettings] = useState<StyleSettings>(defaultSettings)
     const { dispatch } = useStyleMixContext()
 
-    useInitialEffect(() => styleMix.isInited || onCreateMix());
+    useInitialEffect(() => styleMix.isInited || onCreateMix())
 
     const onCreateMix = useCallback(() => {
-        if (isLoading) return;
+        if (isLoading) return
 
-        setIsLoading(true);
+        setIsLoading(true)
         createImageMix({ styleMix, settings })
             .then((value) => {
                 const imageMix: ImageMix = {
@@ -53,7 +53,6 @@ export const StyleMixerRedactor: FC <StyleMixerRedactorProps> = memo((
                 dispatch({ type: 'addMix', id: styleMix.id, payload: imageMix, otherPayload: value.data.id_api })
             }).catch((reason) => {
                 setIsLoading(false)
-                console.log(settings)
                 const error = reason.response?.data?.detail || reason.response?.data?.error || reason.message
                 const imageMix = {
                     settings,
@@ -78,7 +77,7 @@ export const StyleMixerRedactor: FC <StyleMixerRedactorProps> = memo((
 
 
     return (
-        <div className={'StyleMixerRedactor0 ' + className}>
+        <div className={'StyleMixerRedactorRoot ' + className}>
             <div className='StyleMixerRedactor'>
                 <div className='StyleMixerRedactorHead'>
                     <button className='StyleMixerRedactorDelete' onClick={onDelete}>
@@ -103,5 +102,5 @@ export const StyleMixerRedactor: FC <StyleMixerRedactorProps> = memo((
                 {isLoading && <StyleMixerViewer imageMix={{id: styleMix.mixs.length, isLoading: true, settings}} />}
             </div>
         </div>
-    );
-});
+    )
+})

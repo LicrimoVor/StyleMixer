@@ -5,30 +5,34 @@ on:
     branches:
       - main
 jobs:
-
   test_backend:
-    - name: Check out source repository
-      uses: actions/checkout@v3
-    - name: Set up Python environment
-      uses: actions/setup-python@v4
-      with:
-        python-version: "3.12.1"
-      run: cd ./backend
-      run: pip install flake8
-    - name: flake8 Lint
-      run: flake8
+      runs-on: ubuntu-latest
+      steps:
+      - name: Check out source repository
+        uses: actions/checkout@v3
+      - name: Set up Python environment
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12.1"
+        run: cd ./backend
+        run: pip install flake8
+      - name: flake8 Lint
+        run: flake8
 
   test_frontend:
-    - uses: actions/checkout@v4
-    - name: Install Node.js
-      uses: actions/setup-node@v4
-      with:
-          node-version: '21.6.0'
-      run: cd ./frontend
-      run: npm ci
-    - name: Lint TS and CSS
-      run: npm run lint:ts
-      run: npm run lint:css
+      runs-on: ubuntu-latest
+      steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+            node-version: '21.6.0'
+        run: cd ./frontend
+        run: npm ci
+      - name: Lint TS and CSS
+        run: npm run lint:ts
+        run: npm run lint:css
 
   deploy:
     runs-on: ubuntu-latest
@@ -73,4 +77,4 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_TO_LIC }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: Деплой успешно выполнен!
+          message: StyleMixer - коммит выполнен!

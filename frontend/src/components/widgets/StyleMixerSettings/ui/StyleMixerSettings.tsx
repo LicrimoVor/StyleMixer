@@ -8,14 +8,18 @@ import { Model } from '@/entities/StyleSettings';
 import { Popover } from '@/components/shared/Popover';
 import { Slider } from '@/components/shared/Slider';
 
-const DataModels: Record<'value', Model>[] = [
-    { value: 'VGG16' },
-    { value: 'VGG19'},
+type ListBoxItem<T> = {
+    value: T,
+    readonly?: boolean,
+}
+const DataModels: ListBoxItem<Model>[] = [
+    { value: 'VGG16'},
+    { value: 'VGG19', readonly: true},
 ]
-const DataSizes: Record<'value', Size>[] = [
-    { value: '128' },
+const DataSizes: ListBoxItem<Size>[] = [
+    { value: '128', readonly: true },
     { value: '256' },
-    { value: '512' }
+    { value: '512', readonly: true }
 ]
 
 
@@ -108,7 +112,6 @@ export const StyleMixerSettings: FC <StyleMixerSettingsProps> = memo((
                     </Popover>
                 }
             </div>
-            
         </div>
     );
 });

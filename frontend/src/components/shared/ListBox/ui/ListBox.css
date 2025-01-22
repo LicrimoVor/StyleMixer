@@ -41,7 +41,7 @@
 
 .Item.ReadOnly {
     cursor: default;
-    opacity: 0.9;
+    opacity: 0.5;
 }
 
 .ListBox {
