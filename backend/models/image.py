@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, List
 
 from sqlalchemy import String, Column
 from sqlalchemy.orm import Mapped, relationship
-from sqlalchemy_file import FileField, ImageField
+from sqlalchemy_file import ImageField
 
 from core.database import Base
 

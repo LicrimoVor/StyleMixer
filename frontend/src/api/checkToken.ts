@@ -1,5 +1,4 @@
-import axios from "axios";
+import { apiObj } from "@/config/const";
 
-import { apiUrl } from "@/config/const";
-
-export const checkToken = async () => axios.get(apiUrl + "/user");
+/** Прроверить действие токена авторизации */
+export const checkToken = async () => apiObj.get("/user");

@@ -8,29 +8,32 @@
     padding: 8px;
 }
 
-.ImageUploaderBtn:not(.disabled) {
-    cursor: pointer;
-}
-
-.ImageUploaderBtn:hover:not(.disabled){
-    background: var(--accent);
-    color: var(--bg-color);
-}
-
-.ImageUploaderBtn.isDragging {
-    background: var(--accent);
-    color: var(--bg-color);
-}
-
 .ImageUploaderBtn.disabled {
     cursor: default;
     background: var(--hint);
     opacity: 0.7;
 }
 
-.ImageUploaderBtn:not(.isDragging):not(:hover) {
+.ImageUploaderBtn:not(.disabled) {
+    cursor: pointer;
+}
+
+
+.ImageUploaderBtn.isDragging {
+    background: var(--accent);
+    color: var(--bg-color);
+}
+
+.ImageUploaderBtn:not(.isDragging) {
     background: var(--hint);
 }
+
+
+.ImageUploaderBtn:hover:not(.disabled){
+    background: var(--accent);
+    color: var(--bg-color);
+}
+
 
 .ImageUploaderBtnImage {
     width: 24px;   

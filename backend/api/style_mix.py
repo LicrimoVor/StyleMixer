@@ -10,8 +10,7 @@ from PIL import ImageFilter
 from schemas.style_mix import StyleMixSchema
 from core.consts import COOKIE_ANONYMUS_SESSIONKEY
 from core.database import SessionDep
-from utils.base64_to_pil import base64_to_pil
-from utils.pil_to_base64 import pil_to_base64
+from utils.converter_base64 import pil_to_base64, base64_to_pil, file_to_base64
 from utils.hash_buff import hash_buff
 from models.style_mix import StyleMix, ImageMix
 from models.image import Image
@@ -57,7 +56,13 @@ async def create_image_mix(
         session.add(style_mix)
     else:
         style_mix_statement = select(StyleMix).where(StyleMix.user == user)
+        style_mix_statement = style_mix_statement.where(StyleMix.content == content_model)
+        style_mix_statement = style_mix_statement.where(StyleMix.style == style_model)
         style_mix = session.scalar(style_mix_statement)
+
+        if not style_mix:
+            style_mix = StyleMix(user=user, content=content_model, style=style_model)
+            session.add(style_mix)
 
     # !!!!!!!!!!!!!!!!!!!!!!!!!
     img = base64_to_pil(form_data.content)
@@ -77,18 +82,44 @@ async def create_image_mix(
     session.add(image_mix)
     session.commit()
     return {
+        "id_api": style_mix.id,
         "img": pil_to_base64(img),
         "settings": form_data.settings,
-        "id_content": 1,
-        "id_style": 2,
     }
 
 
 @style_mix.get("")
-async def get_style_mixes(request: Request):
-    if request.cookies.get(COOKIE_ANONYMUS_SESSIONKEY):
+async def get_style_mixes(request: Request, session: SessionDep):
+    if not (token := request.cookies.get(COOKIE_ANONYMUS_SESSIONKEY)):
         return Response(status_code=401)
+    statement = select(User).where(User.token == token)
+    user = session.scalar(statement)
+    result = {}
+    for i, style_mix in enumerate(user.style_mixs):
+        result[i] = {
+            "id_api": style_mix.id,
+            "content": file_to_base64(style_mix.content.img.file),
+            "style": file_to_base64(style_mix.style.img.file),
+            "mixs": [
+                {"settings": img_mix.settings, "img": file_to_base64(img_mix.img.file)}
+                for img_mix in style_mix.mixs
+            ],
+        }
 
-    # img = base64_to_pil(form_data.content)
-    # img = img.filter(ImageFilter.BLUR)
-    # base64 = pil_to_base64(img)
+    return result
+
+
+@style_mix.delete("/{id}")
+async def delete_style_mix(id: int, request: Request, session: SessionDep):
+    if not (token := request.cookies.get(COOKIE_ANONYMUS_SESSIONKEY)):
+        return Response(status_code=401)
+    statement = select(User).where(User.token == token)
+    user = session.scalar(statement)
+    statement = select(StyleMix).where(StyleMix.id == id).where(StyleMix.user == user)
+    style_mix = session.scalar(statement)
+    if not style_mix:
+        return Response(status_code=404)
+    session.delete(style_mix)
+    session.commit()
+
+    return Response(status_code=202)

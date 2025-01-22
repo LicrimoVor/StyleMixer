@@ -47,7 +47,30 @@
     opacity: 0.6;
 }
 
-.StyleMixerRedactoTitle {
+.StyleMixerRedactorHead {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.StyleMixerRedactorDelete {
+    margin-right: auto;
+    padding: 4px;
+    background-color: var(--cancel);
+    outline-color: transparent;
+    display: flex;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.StyleMixerRedactorDelete:hover {
+    opacity: 0.8;
+}
+
+
+.StyleMixerRedactorTitle {
     font-size: 32px;
     margin: 16px;
+    margin-right: auto;
 }

@@ -8,7 +8,7 @@ from sqlalchemy.orm import declarative_base, declared_attr, sessionmaker, Sessio
 from sqlalchemy_file.storage import StorageManager
 from libcloud.storage.drivers.local import LocalStorageDriver
 
-from settings import DATABASE_URL
+from core.settings import DATABASE_URL
 
 
 def limit_str(val: Any, limit: int) -> str:

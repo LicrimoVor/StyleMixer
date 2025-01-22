@@ -1,6 +1,7 @@
 import { memo, ComponentPropsWithoutRef, FC } from "react";
 
 /* eslint @typescript-eslint/no-explicit-any: "off" */
+/** Типизированный мемо с дженираками */
 export const typedMemo: <Component extends FC<any>>(
   component: Component,
   compare?: (

@@ -1,6 +1,4 @@
-import axios from "axios";
+import { apiObj } from "@/config/const";
 
-import { apiUrl } from "@/config/const";
-
-export const createToken = async () =>
-  axios.post(apiUrl + "/user/reg", undefined, { withCredentials: true });
+/** Получить токен авторизации */
+export const createToken = async () => apiObj.post("/user/reg");

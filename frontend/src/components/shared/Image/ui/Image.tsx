@@ -1,7 +1,8 @@
 import { FC, memo, useCallback, } from 'react';
 
-import  './Image.css';
 import { openImage } from '../lib/openImage';
+import './Image.css';
+
 
 interface ImageProps {
     className?: string,

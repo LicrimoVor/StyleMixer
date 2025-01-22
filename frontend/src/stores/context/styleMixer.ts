@@ -15,7 +15,7 @@ export const StyleMixerContext = createContext<{
   dispatch: (value: StyleMixerAction) => {},
 });
 
-type IActionType = "create" | "addMix" | "init";
+type IActionType = "create" | "addMix" | "init" | "delete";
 
 /* eslint @typescript-eslint/no-explicit-any: "off" */
 export interface StyleMixerAction {
@@ -31,9 +31,14 @@ export const styleMixerReducer: Reducer<StyleContext, StyleMixerAction> = (
 ) => {
   switch (action.type) {
     case "init": {
-      const styles: StyleMix[] = action.payload.map(
-        (val: StyleMix, i: number) => ({
-          ...val,
+      const styles: StyleMix[] = Object.values(action.payload).map(
+        (value: any, i) => ({
+          ...value,
+          mixs: value.mixs.map((val: any, i: number) => ({
+            ...val,
+            id: i,
+            isLoading: false,
+          })),
           id: i,
           isInited: true,
         })
@@ -43,8 +48,9 @@ export const styleMixerReducer: Reducer<StyleContext, StyleMixerAction> = (
 
     case "create": {
       const styleMixer: StyleMix = action.payload;
-      styleMixer.mix = [];
-      styleMixer.id = state.styles.length;
+      styleMixer.mixs = [];
+      if (state.styles.length == 0) styleMixer.id = 1;
+      else styleMixer.id = state.styles[state.styles.length - 1].id + 1;
       styleMixer.isInited = false;
       return { ...state, styles: [...state.styles, styleMixer] };
     }
@@ -57,21 +63,28 @@ export const styleMixerReducer: Reducer<StyleContext, StyleMixerAction> = (
       return {
         isInited: true,
         styles: [
-          ...state.styles.map((styleMixer, indx) => {
-            if (indx === action.id) {
+          ...state.styles.map((styleMixer) => {
+            if (styleMixer.id === action.id) {
               const imageMix = action.payload;
-              imageMix.id = styleMixer.mix.length;
+              imageMix.id = styleMixer.mixs.length;
 
               return {
                 ...styleMixer,
+                id_api: action.otherPayload,
                 isInited: true,
-                mix: [...styleMixer.mix, imageMix],
+                mixs: [...styleMixer.mixs, imageMix],
               };
             }
 
             return styleMixer;
           }),
         ],
+      };
+    }
+    case "delete": {
+      return {
+        ...state,
+        styles: state.styles.filter((mix) => mix.id != action.id),
       };
     }
     default: {

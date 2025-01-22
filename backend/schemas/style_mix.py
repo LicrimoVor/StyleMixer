@@ -1,7 +1,7 @@
 from typing import Literal
 from typing_extensions import Annotated
 
-from pydantic import BaseModel, BeforeValidator, AfterValidator
+from pydantic import BaseModel, BeforeValidator, AfterValidator, PositiveFloat
 
 from utils.form_to_dict import form_to_dict
 
@@ -20,6 +20,7 @@ class ImageSettingsSchema(BaseModel):
 
     model: Literal["VGG16", "VGG19"]
     size: Annotated[int, AfterValidator(validate_size)]
+    alpha: PositiveFloat
 
 
 class StyleMixSchema(BaseModel):

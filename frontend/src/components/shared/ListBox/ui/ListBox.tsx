@@ -1,8 +1,8 @@
 import { ReactNode, useEffect, useState } from 'react';
 import {Listbox as HListbox } from '@headlessui/react'
 
-import './ListBox.css';
 import { typedMemo } from '@/utils/typedMemo';
+import './ListBox.css';
 
 interface ListBoxItem<T extends string> {
     value: T,

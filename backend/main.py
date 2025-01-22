@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from settings import API_TITLE, MODE, HOST
+from core.settings import API_TITLE, MODE, HOST
 from api.routers import main_router
 
 

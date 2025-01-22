@@ -1,1 +1,2 @@
 COOKIE_ANONYMUS_SESSIONKEY = "anonymus_session_token"
+MAX_AGE_TOKEN = 30 * 24 * 3600

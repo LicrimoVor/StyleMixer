@@ -9,7 +9,7 @@ interface ImageEditableProps {
     callback: (file: File) => void,
 }
 
-//** */
+/**  */
 export const ImageEditable: FC<ImageEditableProps> = ((props: ImageEditableProps) => {
     const {
         image,

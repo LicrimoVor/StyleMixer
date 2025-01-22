@@ -3,12 +3,11 @@ from fastapi import APIRouter, Response, Request
 from sqlalchemy import select
 
 from core.database import SessionDep
-from core.consts import COOKIE_ANONYMUS_SESSIONKEY
+from core.consts import COOKIE_ANONYMUS_SESSIONKEY, MAX_AGE_TOKEN
 from models.user import User
 
 
 user_router = APIRouter(prefix="/user")
-MAX_AGE_TOKEN = 30 * 24 * 3600
 
 
 @user_router.get("")

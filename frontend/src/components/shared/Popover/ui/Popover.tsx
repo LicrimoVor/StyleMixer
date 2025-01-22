@@ -4,8 +4,6 @@ import {Popover as HPopover} from '@headlessui/react'
 import './Popover.css';
 
 
-
-
 interface PopoverProps {
     trigger?: ReactNode,
     children?: ReactNode,

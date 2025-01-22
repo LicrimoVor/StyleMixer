@@ -1,7 +1,6 @@
 import { FC, memo, useCallback } from 'react';
 import { default as RcSlider } from 'rc-slider';
 
-import './Slider.css';
 import 'rc-slider/assets/index.css';
 
 interface SliderProps {
@@ -41,7 +40,7 @@ export const Slider: FC<SliderProps> = memo((
 
 
     return (
-        <div className={'Slider ' + className}>
+        <div className={className}>
             <RcSlider
                 value={value}
                 min={min}

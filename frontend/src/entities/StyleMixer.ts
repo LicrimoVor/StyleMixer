@@ -9,9 +9,10 @@ export type ImageMix = {
 };
 
 export type StyleMix = {
+  id_api?: number;
   id: number;
   isInited: boolean;
   content: string;
   style: string;
-  mix: Array<ImageMix>;
+  mixs: Array<ImageMix>;
 };

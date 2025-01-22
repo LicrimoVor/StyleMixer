@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, List
 
 from sqlalchemy import Column, PickleType, ForeignKey, Integer
 from sqlalchemy.orm import Mapped, relationship, validates, reconstructor
-from sqlalchemy_file import FileField, ImageField
+from sqlalchemy_file import ImageField
 
 from schemas.style_mix import ImageSettingsSchema
 from core.database import Base
@@ -36,6 +36,8 @@ class ImageMix(Base):
 
     @reconstructor
     def post_processing(self):
+        if isinstance(self.settings, ImageSettingsSchema):
+            return self.settings
         self.settings = ImageSettingsSchema(self.settings)
 
 

@@ -40,7 +40,7 @@ export const StyleMixerSettings: FC <StyleMixerSettingsProps> = memo((
     props: StyleMixerSettingsProps
 ) => {
     const {
-        className,
+        className = '',
         direction = 'row',
         directionMenu,
         settings,

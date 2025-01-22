@@ -1,19 +1,27 @@
 import { FC, memo, useCallback, useEffect, useState, } from 'react';
 
 import { ImageUploader, ImageUploaderBtn } from '@/components/shared/ImageUploader';
+import { Image } from '@/components/shared/Image';
 import Plus from '@/assets/plus.png';
-import './StyleMixerCreator.css';
-import { ImageEditable } from './ImageEditable';
-import { StyleMixerSettings } from '../../StyleMixerSettings';
 import { StyleSettings } from '@/entities/StyleSettings';
 import { DefaultStyleSettings } from '@/config/const';
 
+import { StyleMixerSettings } from '../../StyleMixerSettings';
+import './StyleMixerCreator.css';
 
 interface StyleMixerCreatorProps {
     className?: string,
     callback?: (content: File, style: File, settings: StyleSettings) => void,
     refresh?: boolean,
 };
+
+
+const ImageEditable = memo(({ image, callback }: {image: string, callback: (file: File) => void}) => (
+        <div>
+            <Image src={image} size={250} border={8}/>
+            <ImageUploaderBtn callback={callback} label='Изменить'/>
+        </div>
+))
 
 
 /** Панель изменения стиля изображения */
