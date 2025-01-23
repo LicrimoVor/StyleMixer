@@ -17,7 +17,14 @@ if MODE == "dev":
         "http://localhost",
         "http://localhost:3000",
         "http://localhost:8000",
+        "http://127.0.0.1:8000",
+        "http://127.0.0.1:3000",
     ]
+
+    from fastapi.staticfiles import StaticFiles
+
+    app.mount("/api/media/", StaticFiles(directory="storage/images"))
+
 
 app.add_middleware(
     CORSMiddleware,

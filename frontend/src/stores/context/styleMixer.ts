@@ -15,7 +15,7 @@ export const StyleMixerContext = createContext<{
   dispatch: (value: StyleMixerAction) => {},
 });
 
-type IActionType = "create" | "addMix" | "init" | "delete";
+type IActionType = "create" | "update" | "addMix" | "init" | "delete";
 
 /* eslint @typescript-eslint/no-explicit-any: "off" */
 export interface StyleMixerAction {
@@ -39,7 +39,7 @@ export const styleMixerReducer: Reducer<StyleContext, StyleMixerAction> = (
             id: i,
             isLoading: false,
           })),
-          id: i,
+          id: i + 1,
           isInited: true,
         })
       );
@@ -49,11 +49,31 @@ export const styleMixerReducer: Reducer<StyleContext, StyleMixerAction> = (
     case "create": {
       const styleMixer: StyleMix = action.payload;
       styleMixer.mixs = [];
-      if (state.styles.length == 0) styleMixer.id = 0;
+      if (state.styles.length == 0) styleMixer.id = 1;
       else styleMixer.id = state.styles[state.styles.length - 1].id + 1;
 
       styleMixer.isInited = false;
       return { ...state, styles: [...state.styles, styleMixer] };
+    }
+
+    case "update": {
+      if (!action.id) return state;
+
+      return {
+        isInited: true,
+        styles: [
+          ...state.styles.map((styleMixer) => {
+            if (styleMixer.id === action.id) {
+              return {
+                ...styleMixer,
+                ...action.payload,
+              };
+            }
+
+            return styleMixer;
+          }),
+        ],
+      };
     }
 
     case "addMix": {
@@ -69,7 +89,6 @@ export const styleMixerReducer: Reducer<StyleContext, StyleMixerAction> = (
 
               return {
                 ...styleMixer,
-                id_api: action.otherPayload,
                 isInited: true,
                 mixs: [...styleMixer.mixs, imageMix],
               };

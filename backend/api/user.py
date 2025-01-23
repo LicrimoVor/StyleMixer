@@ -16,7 +16,7 @@ async def profile(request: Request, session: SessionDep):
         statement = select(User).where(User.token == token)
         user = session.scalar(statement)
         if user is not None:
-            return Response(status_code=200)
+            return {"viability": str(user.viability).split(".")[0]}
 
     return Response(status_code=401)
 

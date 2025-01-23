@@ -48,7 +48,8 @@ export const StyleMixerCreator: FC <StyleMixerCreatorProps> = memo((
     const callbackContent = useCallback((file: File) => {
         setContent(file)
     }, [setContent])
-    const onSaveHandler = useCallback(() => {
+
+    const onCreateHandler = useCallback(() => {
         if (!style || !content || !callback) return;
         callback(content, style, settings)
     }, [style, content, callback])
@@ -73,7 +74,7 @@ export const StyleMixerCreator: FC <StyleMixerCreatorProps> = memo((
                 />
                 <button
                     className={'StyleMixerCreatorBtn ' + (style && content ? 'Ready' : 'notReady')}
-                    onClick={onSaveHandler}
+                    onClick={onCreateHandler}
                 >
                     <img src={Plus}/>
                 </button>

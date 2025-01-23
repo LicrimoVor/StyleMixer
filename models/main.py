@@ -5,8 +5,8 @@ from torch.utils.data import DataLoader
 from torchvision.datasets import ImageFolder
 from torchvision.transforms import v2
 
-from models.discriminator import Discriminator
-from models.generator import Generator
+from models.models.encoder import Discriminator
+from models.models.decoder import Generator
 
 from lib.dataset import DatasetPhoto
 from lib.trainer import Trainer

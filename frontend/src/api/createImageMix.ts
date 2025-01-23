@@ -1,25 +1,22 @@
-import { apiObj } from "@/config/const";
-import { ImageMix, StyleMix } from "@/entities/StyleMixer";
+import { apiObj, apiUrl } from "@/config/const";
 import { StyleSettings } from "@/entities/StyleSettings";
 
 interface PropsImageMix {
-  styleMix: StyleMix;
+  id_api: number;
   settings: StyleSettings;
 }
-type ResponseImageMix = Omit<ImageMix, "isLoading" | "id"> & { id_api: number };
+type ResponseImageMix = {
+  settings: StyleSettings;
+  img: string;
+};
 
 /** Создание микса стилизации */
-export const createImageMix = async ({ styleMix, settings }: PropsImageMix) =>
-  apiObj.post<ResponseImageMix>(
-    "/image",
-    {
-      content: styleMix.content,
-      style: styleMix.style,
-      settings: JSON.stringify(settings),
-    },
-    {
-      headers: {
-        "content-type": "multipart/form-data",
-      },
-    }
-  );
+export const createImageMix = async ({ id_api, settings }: PropsImageMix) =>
+  apiObj
+    .post<ResponseImageMix>("/image/" + id_api + "/mix", settings, {
+      headers: { "content-type": "application/json" },
+    })
+    .then((reponse) => {
+      reponse.data.img = apiUrl + reponse.data.img;
+      return reponse;
+    });

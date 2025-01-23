@@ -1,9 +1,7 @@
 from typing import Literal
 from typing_extensions import Annotated
 
-from pydantic import BaseModel, BeforeValidator, AfterValidator, PositiveFloat
-
-from utils.form_to_dict import form_to_dict
+from pydantic import BaseModel, AfterValidator, PositiveFloat
 
 
 SIZE_VALUES = {128, 256, 512}
@@ -28,4 +26,3 @@ class StyleMixSchema(BaseModel):
 
     content: str
     style: str
-    settings: Annotated[ImageSettingsSchema, BeforeValidator(form_to_dict)]

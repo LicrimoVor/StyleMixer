@@ -8,11 +8,12 @@ import { StyleSettings } from '@/entities/StyleSettings'
 import { ImageMix, StyleMix } from '@/entities/StyleMixer'
 import { createImageMix } from '@/api/createImageMix'
 import { deleteStyleMix } from '@/api/delStyleMixs'
-import { useInitialEffect } from '@/utils/useInitialEffect'
 
 import { StyleMixerViewer } from '../../StyleMixerViewer'
 import { StyleMixerSettings } from '../../StyleMixerSettings'
+import { useInitRedactor } from '../libs/useIntitRedactor'
 import './StyleMixerRedactor.css'
+
 
 interface StyleMixerRedactorProps {
     className?: string,
@@ -31,17 +32,15 @@ export const StyleMixerRedactor: FC <StyleMixerRedactorProps> = memo((
         styleMix,
     } = props
 
-    const [isLoading, setIsLoading] = useState(false)
     const [settings, setSettings] = useState<StyleSettings>(defaultSettings)
     const { dispatch } = useStyleMixContext()
-
-    useInitialEffect(() => styleMix.isInited || onCreateMix())
+    const { isLoading, setIsLoading} = useInitRedactor(styleMix, settings)
 
     const onCreateMix = useCallback(() => {
-        if (isLoading) return
+        if (isLoading || !styleMix.id_api) return
 
         setIsLoading(true)
-        createImageMix({ styleMix, settings })
+        createImageMix({ id_api: styleMix.id_api, settings })
             .then((value) => {
                 const imageMix: ImageMix = {
                     id: -1,
@@ -50,10 +49,11 @@ export const StyleMixerRedactor: FC <StyleMixerRedactorProps> = memo((
                     isLoading: false,
                 }
                 setIsLoading(false)
-                dispatch({ type: 'addMix', id: styleMix.id, payload: imageMix, otherPayload: value.data.id_api })
+                dispatch({ type: 'addMix', id: styleMix.id, payload: imageMix })
             }).catch((reason) => {
                 setIsLoading(false)
-                const error = reason.response?.data?.detail || reason.response?.data?.error || reason.message
+                console.log(reason)
+                const error = reason.message
                 const imageMix = {
                     settings,
                     error,
@@ -61,7 +61,7 @@ export const StyleMixerRedactor: FC <StyleMixerRedactorProps> = memo((
                 }
                 dispatch({ type: 'addMix', id: styleMix.id, payload: imageMix })
         })
-    }, [settings, styleMix, dispatch, setIsLoading, isLoading,])
+    }, [settings, styleMix, dispatch, setIsLoading, isLoading])
 
     const onDelete = useCallback(() => {
         if (!styleMix.id_api) {
@@ -83,7 +83,7 @@ export const StyleMixerRedactor: FC <StyleMixerRedactorProps> = memo((
                     <button className='StyleMixerRedactorDelete' onClick={onDelete}>
                         <Image src={Trash} size={32}/>
                     </button>
-                    <h3 className='StyleMixerRedactorTitle'>№ {styleMix.id+1}</h3>
+                    <h3 className='StyleMixerRedactorTitle'>№ {styleMix.id}</h3>
                 </div>
                 <div className='StyleMixerRedactorImgs'>
                     <Image src={styleMix.content} size={150} border={8} open/>

@@ -21,9 +21,9 @@ class User(Base):
     style_mixs: Mapped[List[StyleMix]] = relationship(back_populates="user")
 
     @property
-    def vilocity(self):
+    def viability(self):
         """Возвращает оставшееся время жизни токена типа %D:%H:%M."""
         date_now = dt.datetime.now()
         dt_max = dt.timedelta(seconds=MAX_AGE_TOKEN)
         dt_fact = date_now - self.created
-        return max(dt_max - dt_fact, 0)
+        return max(dt_max - dt_fact, dt.timedelta())

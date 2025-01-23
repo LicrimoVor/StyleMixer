@@ -1,9 +1,8 @@
 .venv/
 node_modules/
-stylegan2/
-stylegan2*
 sqlite.db
 build/
 __serve/
 __pycache__/
 storage/
+data/
