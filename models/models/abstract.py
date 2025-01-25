@@ -1,4 +1,5 @@
 from pathlib import Path
+from abc import ABC
 
 from torch import nn
 import torch
@@ -6,7 +7,7 @@ import torch
 BASE_DIR = Path(__file__).parent
 
 
-class AbstractModule(nn.Module):
+class AbstractModule(ABC, nn.Module):
     name: str
 
     def save(self, path: Path):

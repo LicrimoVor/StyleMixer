@@ -1,9 +1,7 @@
 from datetime import datetime as dt
 from pathlib import Path
 
-from models.abstract import AbstractModule
-
-BASE_DIR = Path(__file__).parent.parent.joinpath("models")
+from models.abstract import AbstractModule, BASE_DIR
 
 
 def create_path(model: AbstractModule = None, name: str = None):

@@ -1,4 +1,3 @@
-from typing import Literal
 from pathlib import Path
 
 import torch
@@ -7,37 +6,25 @@ from PIL import Image
 from torch.utils.data import Dataset
 from torchvision.transforms import v2
 
-SIZE = 128, 128
-type ModeType = Literal["train", "valid", "test"]
-# доступно только в python 3.12.0+
+SIZE = 256, 256
 
 
-class DatasetPhoto(Dataset):
+class StyleDataset(Dataset):
 
-    def __init__(self, paths: list[Path], mode: ModeType):
+    def __init__(self, contents: list[Path], styles: list[Path], size: tuple[int, int] = SIZE):
         super().__init__()
-        self.paths = paths
+        self.length = min(len(contents), len(styles))
+        self.contents = contents[: self.length]
+        self.styles = styles[: self.length]
 
-        if mode == "train":
-            self.transformers = v2.Compose(
-                [
-                    v2.PILToTensor(),
-                    v2.Resize(SIZE),
-                    v2.CenterCrop(SIZE),
-                    v2.RandomHorizontalFlip(0.5),
-                    v2.ToDtype(torch.float32, scale=True),
-                    v2.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-                ]
-            )
-        else:
-            self.transformers = v2.Compose(
-                [
-                    v2.PILToTensor(),
-                    v2.Resize(SIZE),
-                    v2.ToDtype(torch.float32, scale=True),
-                    v2.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-                ]
-            )
+        self.transformers = v2.Compose(
+            [
+                v2.PILToTensor(),
+                v2.Resize(size),
+                v2.ToDtype(torch.float32, scale=True),
+                v2.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
+            ]
+        )
 
     def load_img(self, path: Path):
         img = Image.open(path)
@@ -45,11 +32,12 @@ class DatasetPhoto(Dataset):
         return img
 
     def __len__(self):
-        return len(self.paths)
+        return self.length
 
-    def __getitem__(self, index: int):
-        path = self.paths[index]
-        photo = self.load_img(path)
-        photo = self.transformers(photo)
+    def __getitem__(self, index: int) -> tuple[torch.Tensor, torch.Tensor]:
+        content_path = self.contents[index]
+        style_path = self.styles[index]
+        content = self.transformers(self.load_img(content_path))
+        style = self.transformers(self.load_img(style_path))
 
-        return photo
+        return content, style
