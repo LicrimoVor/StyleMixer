@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from core.settings import API_TITLE, MODE, HOST
+from core.settings import API_TITLE, MODE, HOST_URL
 from api.routers import main_router
 
 
@@ -11,7 +11,7 @@ app = FastAPI(
     redoc_url="/api/redoc",
     openapi_url="/api/openapi.json",
 )
-origins = [f"http://{HOST}"]
+origins = [f"http://{HOST_URL}"]
 if MODE == "dev":
     origins += [
         "http://localhost",
