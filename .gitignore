@@ -6,3 +6,4 @@ __serve/
 __pycache__/
 storage/
 data/
+*.pth

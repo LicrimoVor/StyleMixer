@@ -1,4 +1,8 @@
+"""Загрузка датасета"""
+
+
 def download():
+    """Вызвать ее, чтобы скачать."""
     import kagglehub
 
     path = kagglehub.dataset_download("steubk/wikiart")
@@ -8,6 +12,7 @@ def download():
 
 
 def check_count():
+    """Вызвать ее, чтобы проверить количество файлов."""
     from pathlib import Path
 
     data_path = Path(__file__).parent.joinpath("data")
@@ -18,4 +23,5 @@ def check_count():
     print(f"Style count: {len(style)}")
 
 
+# download()
 check_count()

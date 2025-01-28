@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Union
 
 from torch import Tensor
 import torch.nn.functional as F
@@ -15,24 +15,34 @@ class StyleLoss:
 
     def __init__(self, w_style: float):
         self.w_style = w_style
+        self.loss_style = 0
+        self.loss_content = 0
 
-    def __call__(self, response: ResponseDict) -> Tensor:
-        loss_c = self.content_loss(response["out_features"]["end"], response["target_feature"])
-        loss_s = self.style_loss(response["out_features"]["mid"], response["style_features"]["mid"])
-        loss = loss_c + self.w_style * loss_s
-        return loss
+    def __call__(self, response: ResponseDict, all_loss=False) -> Union[Tensor, tuple[Tensor]]:
+        self.loss_content = self.calc_content(
+            response["out_features"]["end"], response["target_feature"]
+        )
+        self.loss_style = self.calc_style(
+            response["out_features"]["mid"], response["style_features"]["mid"]
+        )
+
+        self.loss_total = self.loss_content + self.w_style * self.loss_style
+
+        if all_loss:
+            return self.loss_content, self.loss_style, self.loss_total
+        return self.loss_total
 
     @staticmethod
-    def content_loss(out_end_feature: Tensor, target_feature: Tensor) -> Tensor:
+    def calc_content(out_end_feature: Tensor, target_feature: Tensor) -> Tensor:
         """Потеря контента."""
         return F.mse_loss(out_end_feature, target_feature)
 
     @staticmethod
-    def style_loss(content_mid_features: list[Tensor], style_mid_features: list[Tensor]) -> Tensor:
+    def calc_style(out_mid_features: list[Tensor], style_mid_features: list[Tensor]) -> Tensor:
         """Потеря стиля."""
         loss = 0
-        for content_feature, style_feature in zip(content_mid_features, style_mid_features):
-            content_mean, content_std = calc_mean_std(content_feature)
+        for out_feature, style_feature in zip(out_mid_features, style_mid_features):
+            out_mean, out_std = calc_mean_std(out_feature)
             style_mean, style_std = calc_mean_std(style_feature)
-            loss += F.mse_loss(content_mean, style_mean) + F.mse_loss(content_std, style_std)
+            loss += F.mse_loss(out_mean, style_mean) + F.mse_loss(out_std, style_std)
         return loss

@@ -9,11 +9,7 @@ def save_model(model: nn.Module, path: Path):
     name = model.__class__.__name__
     save_path = path.joinpath(name)
     Path.mkdir(save_path)
-
-    torch.save(
-        model.state_dict(),
-        save_path.joinpath("model"),
-    )
+    torch.save(model.state_dict(), save_path.joinpath("model"))
     with open(save_path.joinpath("struct.txt"), "+w") as file:
         file.write(str(model))
 

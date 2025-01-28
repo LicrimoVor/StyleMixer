@@ -1,6 +1,6 @@
 from typing import TypedDict, Union
 
-from torch import nn, Tensor
+from torch import nn, Tensor, no_grad
 
 from .libs.calc_mean_std import calc_mean_std
 from .abstract import AbstractModule
@@ -47,14 +47,24 @@ class StyleNet(AbstractModule):
         alpha=1.0,
         out_features=False,
     ) -> Union[Tensor, ResponseDict]:
-        *content_mid_feature, content_end_feature = self.encoder(contents, output_last_feature=True)
-        *style_mid_features, style_end_feature = self.encoder(styles, output_last_feature=True)
+        with no_grad():
+            *content_mid_feature, content_end_feature = self.encoder(contents)
+            *style_mid_features, style_end_feature = self.encoder(styles)
+
         t = adain(content_end_feature, style_end_feature)
         target_feature = alpha * t + (1 - alpha) * content_end_feature
         out = self.decoder(target_feature)
 
         if out_features:
-            *out_mid_features, out_end_feature = self.encoder(out, output_last_feature=True)
+            *out_mid_features, out_end_feature = self.encoder(out)
+            # print(
+            #     out_end_feature.shape,
+            #     out.shape,
+            #     contents.shape,
+            #     target_feature.shape,
+            #     style_end_feature.shape,
+            # )
+
             return ResponseDict(
                 content_features={"mid": content_mid_feature, "end": content_end_feature},
                 style_features={"mid": style_mid_features, "end": style_end_feature},

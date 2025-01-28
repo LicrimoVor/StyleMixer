@@ -1,73 +1,63 @@
+"""Обучение модели."""
+
 from pathlib import Path
 
 import torch
 from torch.utils.data import DataLoader
-from torchvision.datasets import ImageFolder
-from torchvision.transforms import v2
 
-from models.models.encoder import Discriminator
-from models.models.decoder import Generator
+from models.libs.loss import StyleLoss
+from models.encoder import Encoder
+from models.decoder import Decoder
 
-from lib.dataset import DatasetPhoto
-from lib.trainer import Trainer
+# from models.decoder2 import Decoder as Decoder2
+from models.net import StyleNet
+
+from utils.loader import create_loader
+from utils.save_picture import save_picture
+from utils.dataset import StyleDataset
+from utils.trainer import StyleTrainer
+from utils.profiler import profiler
 
 
 if __name__ == "__main__":
     BASE_PATH = Path(__file__).parent
     MAGIC_NUMER = 42
-    BATCH_SIZE = 16
+    BATCH_SIZE = 32
+    SIZE = 128, 128
     DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+    # DEVICE = "cpu"
 
     # np.random.seed(MAGIC_NUMER)
     # torch.manual_seed(MAGIC_NUMER)
     # torch.cuda.manual_seed(MAGIC_NUMER).
 
-    # all_paths = list(BASE_PATH.joinpath("faces_dataset_small").iterdir())
-    # train_dataset = DatasetPhoto(all_paths, "train")
-    # train_dataloder = DataLoader(train_dataset, BATCH_SIZE, shuffle=True, num_workers=8)
+    content_paths = list(BASE_PATH.joinpath("data/coco2017").glob("**/*.jpg"))
+    style_paths = list(BASE_PATH.joinpath("data/wikiart").glob("**/*.jpg"))
+    minimal_length = min(len(content_paths), len(style_paths))
+    dataset_content = StyleDataset(content_paths[:minimal_length], SIZE)
+    dataset_style = StyleDataset(style_paths[:minimal_length], SIZE)
 
-    train_ds = ImageFolder(
-        BASE_PATH.joinpath("photo"),
-        transform=v2.Compose(
-            [
-                v2.Resize(Generator.IMG_SIZE),
-                v2.CenterCrop(Generator.IMG_SIZE),
-                v2.ToImage(),
-                v2.ToDtype(torch.float32, scale=True),
-                v2.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-            ]
-        ),
+    dataloader_content = DataLoader(
+        dataset_content, BATCH_SIZE, shuffle=True, drop_last=True, num_workers=8
     )
-
-    # valid_dataloder = DataLoader(valid_dataset, BATCH_SIZE, shuffle=True, num_workers=4)
-    train_dl = DataLoader(train_ds, BATCH_SIZE, shuffle=True, num_workers=6, pin_memory=True)
+    dataloader_style = DataLoader(
+        dataset_style, BATCH_SIZE, shuffle=True, drop_last=True, num_workers=8
+    )
+    loader = create_loader(dataloader_content, dataloader_style)
 
     print("init model")
-    EPOCHS = 100
-    generator = Generator()
-    discriminator = Discriminator()
-    model = {
-        "generator": generator,
-        "discriminator": discriminator,
-    }
-    loss_f = {
-        "generator": torch.nn.BCELoss(),
-        "discriminator": torch.nn.BCELoss(),
-    }
-    optimizer = {
-        "generator": torch.optim.Adam(generator.parameters(), lr=4e-4, betas=(0.5, 0.9)),
-        "discriminator": torch.optim.Adam(discriminator.parameters(), lr=4e-4, betas=(0.5, 0.9)),
-    }
-    scheduler = {
-        "generator": torch.optim.lr_scheduler.StepLR(optimizer["generator"], 10, 0.2),
-        "discriminator": torch.optim.lr_scheduler.StepLR(optimizer["discriminator"], 10, 0.2),
-    }
-    trainer = Trainer(model, loss_f, optimizer, EPOCHS, DEVICE, scheduler=scheduler, save=True)
-    history = trainer.train(train_dl)
-    # trainer.check_profile(train_dataloder)
+    EPOCHS = 10
+    encoder = Encoder().to(DEVICE)
+    decoder = Decoder().to(DEVICE)
+    # decoder = Decoder.load(BASE_PATH.joinpath("models/StyleNet/28-01-2025_13-01/Decoder/model"))
+    model = StyleNet(encoder, decoder).to(DEVICE)
+    loss_f = StyleLoss(w_style=10)
+    optimizer = torch.optim.Adam(model.decoder.parameters(), lr=2e-4)
+    scheduler = torch.optim.lr_scheduler.StepLR(optimizer, 4, 0.5)
+    trainer = StyleTrainer(model, loss_f, optimizer, EPOCHS, DEVICE, scheduler=scheduler, save=True)
+    # history = trainer.train(loader, step_epoch=1, step_iter=40_000 // BATCH_SIZE)
+    profiler(loader, trainer)
 
-    # test_loss = trainer.eval(test_dataset)
-    # img, _ = next(iter(dt_generator(test_dataset)))
-    # pred, _ = model(img)
-
-    # save_picture([pred], [img], BASE_PATH.joinpath("test.png"))
+    # contents, styles = next(iter(loader()))
+    # mixs = model(contents, styles)
+    # save_picture(contents, styles, mixs, path=BASE_PATH.joinpath("test.png"))

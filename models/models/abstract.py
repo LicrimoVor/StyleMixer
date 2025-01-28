@@ -23,8 +23,8 @@ class AbstractModule(ABC, nn.Module):
         return sum(p.numel() for p in self.parameters())
 
     @classmethod
-    def load(cls, dim_code: int, mode: str, path: str):
-        model = cls(dim_code, mode)
+    def load(cls, path: str):
+        model = cls()
         model.load_state_dict(torch.load(path, weights_only=True))
         model.eval()
         return model
