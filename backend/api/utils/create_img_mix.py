@@ -5,19 +5,19 @@ from PIL.ImageFile import ImageFile
 
 from schemas.style_mix import ImageSettingsSchema
 from utils.hash_buff import hash_buff
-from utils.create_styled_img import create_styled_img
+from utils.post_to_style_mix import post_to_style_mix
 from models.style_mix import StyleMix, ImageMix
 from models.user import User
 
 
-def create_img_mix(
+async def create_img_mix(
     content: ImageFile,
     style: ImageFile,
     settings: ImageSettingsSchema,
     user: User,
     style_mix: StyleMix,
 ):
-    img = create_styled_img(content, style)
+    img = await post_to_style_mix(content, style, settings)
     buff_img = BytesIO()
     img.save(buff_img, format="JPEG")
 

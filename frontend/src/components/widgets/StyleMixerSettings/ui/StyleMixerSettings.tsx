@@ -14,12 +14,12 @@ type ListBoxItem<T> = {
 }
 const DataModels: ListBoxItem<Model>[] = [
     { value: 'VGG16'},
-    { value: 'VGG19', readonly: true},
+    { value: 'VGG19'},
 ]
 const DataSizes: ListBoxItem<Size>[] = [
-    { value: '128', readonly: true },
+    { value: '128' },
     { value: '256' },
-    { value: '512', readonly: true }
+    { value: '512' }
 ]
 
 

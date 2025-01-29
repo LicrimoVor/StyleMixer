@@ -10,7 +10,7 @@ PATH_BASE = Path(__file__).parent.parent
 MODE: Literal["dev", "prod"] = "dev"
 
 DATABASE_URL = "sqlite:///./storage/sqlite.db" if MODE == "dev" else None
-MODELS_URL = "http://localhost:8080" if MODE == "dev" else "http://model:8080"
+MODEL_URL = "http://localhost:8080" if MODE == "dev" else "http://model:8080"
 HOST_URL = "127.0.0.1" if MODE == "dev" else None
 
 API_TITLE = "StyleMixApi"

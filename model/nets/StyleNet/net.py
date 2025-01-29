@@ -2,8 +2,8 @@ from typing import TypedDict, Union
 
 from torch import nn, Tensor, no_grad
 
-from .libs.calc_mean_std import calc_mean_std
-from .abstract import AbstractModule
+from ..libs.calc_mean_std import calc_mean_std
+from ..abstract import AbstractModule
 
 
 def adain(content_features, style_features):
@@ -27,7 +27,7 @@ ResponseDict = TypedDict(
 )
 
 
-class StyleNet(AbstractModule):
+class ModelNet(AbstractModule):
     name = "style_net"
 
     def __init__(self, encoder: nn.Module, decoder: nn.Module):

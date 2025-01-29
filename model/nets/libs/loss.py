@@ -7,7 +7,7 @@ import torch.nn.functional as F
 from .calc_mean_std import calc_mean_std
 
 if TYPE_CHECKING:
-    from ..net import ResponseDict
+    from ..StyleNet.net import ResponseDict
 
 
 class StyleLoss:

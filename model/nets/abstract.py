@@ -1,10 +1,23 @@
 from pathlib import Path
-from abc import ABC
+from typing import TypedDict
+from abc import ABC, abstractmethod
 
+from PIL.ImageFile import ImageFile
 from torch import nn
 import torch
+from torchvision.transforms import v2
+
 
 BASE_DIR = Path(__file__).parent
+DataType = TypedDict(
+    "DataType",
+    {
+        "content": ImageFile,
+        "style": ImageFile,
+        "alpha": float,
+        "size": int,
+    },
+)
 
 
 class AbstractModule(ABC, nn.Module):
@@ -28,3 +41,21 @@ class AbstractModule(ABC, nn.Module):
         model.load_state_dict(torch.load(path, weights_only=True))
         model.eval()
         return model
+
+
+class AbstractNet(ABC):
+    model: AbstractModule
+    device: torch.device
+
+    @staticmethod
+    def resize_data(data: DataType) -> ImageFile:
+        if data["size"] == -1:
+            return data
+
+        transform = v2.Resize((data["size"], data["size"]))
+        data["content"] = transform(data["content"])
+        data["style"] = transform(data["style"])
+        return data
+
+    @abstractmethod
+    def __call__(self, data: DataType) -> ImageFile: ...

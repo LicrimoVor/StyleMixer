@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from nets.libs.save_model import save_model
 from nets.libs.create_path import create_path
 from nets.libs.loss import StyleLoss
-from nets.net import StyleNet
+from nets.StyleNet.net import ModelNet
 
 from .save_picture import save_picture
 from .dataset import StyleDataset
@@ -30,7 +30,7 @@ class StyleTrainer:
 
     def __init__(
         self,
-        model: StyleNet,
+        model: ModelNet,
         loss_f: StyleLoss,
         optimizer: torch.optim.Optimizer,
         epoch_count: int = 10,
@@ -46,7 +46,8 @@ class StyleTrainer:
 
         self.model = model
         self.is_save = save
-        self.save_path = create_path(name="StyleNet")
+        if save:
+            self.save_path = create_path(name="StyleNet")
 
     def fit(
         self,
@@ -81,7 +82,7 @@ class StyleTrainer:
                 }
             )
             count_iter += 1
-            if count_iter % step_iter == 0:
+            if self.is_save and count_iter % step_iter == 0:
                 save_picture(
                     contents.cpu(),
                     styles.cpu(),

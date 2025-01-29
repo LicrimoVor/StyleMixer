@@ -44,7 +44,13 @@ export const StyleMixerViewer: FC <StyleMixerViewerProps> = memo((
     } else {
         InnerElement = (
             <>
-                <a href={imageMix.img} download='ImageMix' className='StyleMixerViewerDownload'>
+                <a
+                    href={imageMix.img}
+                    download='ImageMix'
+                    className='StyleMixerViewerDownload'
+                    target='_blank'
+                    rel='noreferrer'
+                >
                     <Image src={download} size={25}/>
                 </a>
                 <Image src={imageMix.img} size={150} open border={8}/>

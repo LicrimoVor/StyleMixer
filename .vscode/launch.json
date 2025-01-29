@@ -5,14 +5,30 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "FastAPI",
+            "name": "Backend",
             "type": "debugpy",
             "request": "launch",
             "module": "uvicorn",
             "cwd": "${workspaceFolder}/backend",
             "args": [
                 "main:app",
-                "--reload"
+                "--reload",
+                "--port",
+                "8000"
+            ],
+            "jinja": true
+        },
+        {
+            "name": "Model",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "uvicorn",
+            "cwd": "${workspaceFolder}/model",
+            "args": [
+                "main:app",
+                "--reload",
+                "--port",
+                "8080"
             ],
             "jinja": true
         }

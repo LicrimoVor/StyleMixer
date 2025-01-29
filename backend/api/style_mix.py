@@ -13,10 +13,10 @@ from .utils.create_or_get_img import create_or_get
 from .utils.create_img_mix import create_img_mix
 
 
-style_mix = APIRouter(prefix="/image")
+style_mix_router = APIRouter(prefix="/image")
 
 
-@style_mix.post("")
+@style_mix_router.post("")
 async def create_style_mix(
     request: Request,
     form_data: Annotated[StyleMixSchema, Form()],
@@ -51,7 +51,7 @@ async def create_style_mix(
     }
 
 
-@style_mix.get("")
+@style_mix_router.get("")
 async def get_style_mixes(request: Request, session: SessionDep):
     if not (user := get_user(request, session)):
         return Response(status_code=401)
@@ -71,7 +71,7 @@ async def get_style_mixes(request: Request, session: SessionDep):
     return result
 
 
-@style_mix.delete("/{id}")
+@style_mix_router.delete("/{id}")
 async def delete_style_mix(id: int, request: Request, session: SessionDep):
     if not (user := get_user(request, session)):
         return Response(status_code=401)
@@ -86,7 +86,7 @@ async def delete_style_mix(id: int, request: Request, session: SessionDep):
     return Response(status_code=202)
 
 
-@style_mix.post("/{id}/mix")
+@style_mix_router.post("/{id}/mix")
 async def create_image_mix(
     id: int,
     request: Request,
@@ -103,7 +103,7 @@ async def create_image_mix(
 
     content = Image.open(style_mix.content.img.file)
     style = Image.open(style_mix.style.img.file)
-    image_mix = create_img_mix(content, style, settings, user, style_mix)
+    image_mix = await create_img_mix(content, style, settings, user, style_mix)
     session.add(image_mix)
     session.commit()
 

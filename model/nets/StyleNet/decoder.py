@@ -1,6 +1,6 @@
 from torch import nn, Tensor
 
-from .abstract import AbstractModule
+from ..abstract import AbstractModule
 
 
 class ConvBlock(nn.Module):

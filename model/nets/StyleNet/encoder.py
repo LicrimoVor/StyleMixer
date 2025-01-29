@@ -2,7 +2,7 @@ from torch import nn, Tensor
 from torchvision.models import vgg16
 from torchvision.models.vgg import VGG16_Weights
 
-from .abstract import AbstractModule
+from ..abstract import AbstractModule
 
 
 class Encoder(AbstractModule):

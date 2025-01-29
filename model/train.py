@@ -7,9 +7,9 @@ import torch
 from torch.utils.data import DataLoader
 
 from nets.libs.loss import StyleLoss
-from nets.encoder import Encoder
-from nets.decoder import Decoder
-from nets.net import StyleNet
+from nets.StyleNet.encoder import Encoder
+from nets.StyleNet.decoder import Decoder
+from nets.StyleNet.net import ModelNet
 
 from utils.loader import create_loader
 from utils.save_picture import save_picture
@@ -26,7 +26,7 @@ if __name__ == "__main__":
     SIZE = 128, 128
 
     DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-    MODE: Literal["train", "profile", "test"] = "profile"
+    MODE: Literal["train", "profile", "test"] = "test"
 
     print("init dataset")
     content_paths = list(BASE_PATH.joinpath("data/coco2017").glob("**/*.jpg"))
@@ -46,13 +46,15 @@ if __name__ == "__main__":
     print("init model")
 
     encoder = Encoder().to(DEVICE)
-    decoder = Decoder.load(BASE_PATH.joinpath("models/StyleNet/Decoder/model")).to(DEVICE)
-    model = StyleNet(encoder, decoder).to(DEVICE)
+    decoder = Decoder.load(BASE_PATH.joinpath("nets/StyleNet/model.pth")).to(DEVICE)
+    model = ModelNet(encoder, decoder).to(DEVICE)
 
     loss_f = StyleLoss(w_style=10)
     optimizer = torch.optim.Adam(model.decoder.parameters(), lr=1e-5)
     scheduler = torch.optim.lr_scheduler.StepLR(optimizer, 4, 0.5)
-    trainer = StyleTrainer(model, loss_f, optimizer, EPOCHS, DEVICE, scheduler=scheduler, save=True)
+    trainer = StyleTrainer(
+        model, loss_f, optimizer, EPOCHS, DEVICE, scheduler=scheduler, save=MODE == "train"
+    )
 
     print(f"mode: {MODE}")
     match MODE:
@@ -60,9 +62,9 @@ if __name__ == "__main__":
             history = trainer.train(loader, step_epoch=1, step_iter=80_000 // BATCH_SIZE)
         case "profile":
             profiler(loader, trainer)
-        case "train":
+        case "test":
             contents, styles = next(iter(loader()))
-            mixs = model(contents, styles)
+            mixs = model(contents.to(DEVICE), styles.to(DEVICE))
             save_picture(
                 contents.cpu(), styles.cpu(), mixs.cpu(), path=BASE_PATH.joinpath("test.png")
             )
