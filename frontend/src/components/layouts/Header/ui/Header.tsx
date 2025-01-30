@@ -1,6 +1,9 @@
-import { FC, memo, } from 'react';
+import { FC, memo, useCallback, } from 'react';
+
+import { useGeneralContext } from '@/stores/context/general';
 
 import'./Header.css';
+
 
 interface HeaderProps {
     className?: string,
@@ -16,9 +19,15 @@ export const Header: FC <HeaderProps> = memo((
         viability='',
     } = props;
 
+    const { dispatch } = useGeneralContext();
+
+    const onSetAdmin = useCallback(() => {
+        dispatch({type: 'setAdmin'})
+    }, [dispatch])
+
     return (
         <div className={'Header ' + className}>
-            <h1 className='title'>StyleMixer - LicrimoVor project</h1>
+            <h1 className='title'>StyleMixer - <a className='title' onClick={onSetAdmin}>LicrimoVor</a> project</h1>
             <p className='viability'>{viability}</p>
         </div>
     );

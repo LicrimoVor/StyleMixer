@@ -15,3 +15,10 @@
 .viability {
     margin-left: auto;
 }
+
+.setAdmin {
+    display: flex;
+    padding: 0;
+    border: none;
+    outline: none;
+}

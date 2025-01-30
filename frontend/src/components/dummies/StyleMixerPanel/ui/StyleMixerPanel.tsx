@@ -6,11 +6,13 @@ import { useInitialEffect } from '@/utils/useInitialEffect';
 import { StyleMixerRedactor } from '@/components/widgets/StyleMixerRedactor';
 import { Skeleton } from '@/components/shared/Skeleton';
 import { StyleMixerCreator } from '@/components/widgets/StyleMixerCreator';
+import { RandomStyles } from '@/components/widgets/RandomStyles';
 import { StyleSettings } from '@/entities/StyleSettings';
 import { DefaultStyleSettings } from '@/config/const';
 import { getStyleMixs } from '@/api/getStyleMixs';
 
 import './StyleMixerPanel.css';
+
 
 interface StyleMixerPanelProps {
     className?: string,
@@ -53,6 +55,7 @@ export const StyleMixerPanel: FC <StyleMixerPanelProps> = memo((
     const { state, dispatch } = useStyleMixContext();
     const [settings, setSettings] = useState<StyleSettings>(DefaultStyleSettings);
     const [refresh, setRefresh] = useState(false);
+    const [randomStyle, setRandomStyle] = useState<string>();
 
     useInitialEffect(() => {
             getStyleMixs().then((value) => {
@@ -65,7 +68,7 @@ export const StyleMixerPanel: FC <StyleMixerPanelProps> = memo((
             })
     })
 
-    const onCreateStyleMix = useCallback((content: File, style: File, settings: StyleSettings) => {
+    const onCreateStyleMix = useCallback((content: File|string, style: File|string, settings: StyleSettings) => {
         setRefresh(!refresh)
         setSettings(settings)
         
@@ -80,6 +83,10 @@ export const StyleMixerPanel: FC <StyleMixerPanelProps> = memo((
             })
         })
     }, [refresh, setRefresh, setSettings])
+    
+    const onSetRandomStyle = useCallback((img: string) => {
+        setRandomStyle(img)
+    }, [setRandomStyle])
 
     const Views = useMemo(() => (
         state.styles.map((styleMix, i) => (
@@ -89,7 +96,7 @@ export const StyleMixerPanel: FC <StyleMixerPanelProps> = memo((
                 key={i}
             />
         ))
-    ), [state.styles])
+    ), [state.styles, settings])
 
     return (
         <div className={'StyleMixerPanel ' + className}>
@@ -99,7 +106,9 @@ export const StyleMixerPanel: FC <StyleMixerPanelProps> = memo((
                     className='StyleMixerPanelHeadCreator'
                     callback={onCreateStyleMix}
                     refresh={refresh}
+                    style={randomStyle}
                 />
+                <RandomStyles setStyle={onSetRandomStyle}/>
             </div>
             <div className='StyleMixerPanelRedactors'>
                 {state.isInited ?

@@ -1,0 +1,11 @@
+.RandomStylesWrapper {
+    padding: 10px;
+    display: inline-grid;
+    flex-wrap: wrap;
+    gap: 10px;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.RandomStylesPopover > .PopoverMenu {
+    right: 0%;
+}

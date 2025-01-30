@@ -1,12 +1,14 @@
-import { FC, memo, useCallback, useState, } from 'react';
+import { FC, memo, useCallback, useMemo, useState, } from 'react';
 
-
-import './StyleMixerSettings.css';
 import { Size, StyleSettings } from '@/entities/StyleSettings';
-import { ListBox } from '@/components/shared/ListBox';
 import { Model } from '@/entities/StyleSettings';
+import { ListBox } from '@/components/shared/ListBox';
 import { Popover } from '@/components/shared/Popover';
 import { Slider } from '@/components/shared/Slider';
+import { useGeneralContext } from '@/stores/context/general';
+
+import './StyleMixerSettings.css';
+
 
 type ListBoxItem<T> = {
     value: T,
@@ -19,7 +21,7 @@ const DataModels: ListBoxItem<Model>[] = [
 const DataSizes: ListBoxItem<Size>[] = [
     { value: '128' },
     { value: '256' },
-    { value: '512' }
+    { value: '512' },
 ]
 
 
@@ -53,6 +55,7 @@ export const StyleMixerSettings: FC <StyleMixerSettingsProps> = memo((
     } = props;
 
     const [alpha, setAlpha] = useState(settings.alpha);
+    const { state } = useGeneralContext();
 
     const onChangeModel = useCallback((model: Model) => {
         if (!onChange) return
@@ -66,6 +69,10 @@ export const StyleMixerSettings: FC <StyleMixerSettingsProps> = memo((
         if (!onChange) return
         onChange({...settings, alpha})
     }, [onChange, settings])
+
+    const dataSizes = useMemo<ListBoxItem<Size>[]>(() => {
+        return state.isAdmin? [...DataSizes, { value: '-1' }]: DataSizes
+    }, [state])
 
     return (
         <div style={{flexDirection:direction}} className={'StyleMixerSettings '+ className}>
@@ -84,7 +91,7 @@ export const StyleMixerSettings: FC <StyleMixerSettingsProps> = memo((
             <div className='HStack'>
                 <p style={{margin: 0}}>s:</p>
                 <ListBox<Size>
-                    data={DataSizes}
+                    data={dataSizes}
                     onChange={onChangeSize}
                     selectedValue={settings.size}
                     textBtn={settings.size}

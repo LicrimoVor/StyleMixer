@@ -11,7 +11,8 @@ import './StyleMixerCreator.css';
 
 interface StyleMixerCreatorProps {
     className?: string,
-    callback?: (content: File, style: File, settings: StyleSettings) => void,
+    callback?: (content: File | string, style: File | string, settings: StyleSettings) => void,
+    style?: File|string,
     refresh?: boolean,
 };
 
@@ -23,6 +24,11 @@ const ImageEditable = memo(({ image, callback }: {image: string, callback: (file
         </div>
 ))
 
+const ImageSrc = (img: File | string) => {
+    if (typeof img === 'string') return img
+    return URL.createObjectURL(img)
+}
+
 
 /** Панель изменения стиля изображения */
 export const StyleMixerCreator: FC <StyleMixerCreatorProps> = memo((
@@ -31,16 +37,21 @@ export const StyleMixerCreator: FC <StyleMixerCreatorProps> = memo((
     const {
         className = '',
         callback,
+        style: default_style,
         refresh
     } = props;
-    const [style, setStyle] = useState<File>();
-    const [content, setContent] = useState<File>();
+    const [style, setStyle] = useState<File|string>();
+    const [content, setContent] = useState<File|string>();
     const [settings, setSettings] = useState<StyleSettings>(DefaultStyleSettings);
 
     useEffect(() => {
         setStyle(undefined)
         setContent(undefined)
     }, [refresh])
+
+    useEffect(() => {
+        setStyle(default_style)
+    }, [default_style])
 
     const callbackStyle = useCallback((file: File) => {
         setStyle(file)
@@ -59,7 +70,7 @@ export const StyleMixerCreator: FC <StyleMixerCreatorProps> = memo((
             <div className='StyleMixerCreatorUpload'>
                 <h3 className='StyleMixerCreatorTitle'>Content</h3>
                 {content ?
-                    <ImageEditable image={URL.createObjectURL(content)} callback={callbackContent}/> :
+                    <ImageEditable image={ImageSrc(content)} callback={callbackContent}/> :
                     <div className='StyleMixerCreatorEditor'>
                         <ImageUploader label='content' callback={callbackContent} />
                         <ImageUploaderBtn disabled label='Изменить'/>
@@ -82,7 +93,7 @@ export const StyleMixerCreator: FC <StyleMixerCreatorProps> = memo((
             <div className='StyleMixerCreatorUpload'>
                 <h3 className='StyleMixerCreatorTitle'>Style</h3>
                 {style ?
-                    <ImageEditable image={URL.createObjectURL(style)} callback={callbackStyle}/> :
+                    <ImageEditable image={ImageSrc(style)} callback={callbackStyle}/> :
                     <div className='StyleMixerCreatorEditor'>
                         <ImageUploader label='style' callback={callbackStyle} />
                         <ImageUploaderBtn disabled label='Изменить'/>

@@ -52,7 +52,7 @@ class AbstractNet(ABC):
         if data["size"] == -1:
             return data
 
-        transform = v2.Resize((data["size"], data["size"]))
+        transform = v2.Resize(data["size"])
         data["content"] = transform(data["content"])
         data["style"] = transform(data["style"])
         return data

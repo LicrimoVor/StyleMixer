@@ -13,3 +13,5 @@ export const DefaultStyleSettings: StyleSettings = {
   size: "128",
   alpha: 0.5,
 };
+
+export const COUNT_RANDOM_STYLES = 9;

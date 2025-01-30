@@ -1,0 +1,38 @@
+.Button.clear {
+    outline-color: transparent;
+    display: flex;
+    border: none;
+    cursor: pointer;
+    background: none;
+    margin: 0;
+    padding: 0;
+}
+
+.Button.clear:hover {
+    opacity: 0.75;
+}
+
+.Button.normal {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    align-items: center;
+    border: 1px solid var(--light-bg);
+    background: var(--hint);
+    border-radius: 8px;
+    padding: 8px;
+}
+
+.Button.normal.disabled {
+    cursor: default;
+    opacity: 0.7;
+}
+
+.Button.normal:not(.disabled) {
+    cursor: pointer;
+}
+
+.Button.normal:hover:not(.disabled){
+    background: var(--accent);
+    color: var(--bg-color);
+}

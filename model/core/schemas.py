@@ -4,7 +4,7 @@ from typing_extensions import Annotated
 from pydantic import BaseModel, AfterValidator, PositiveFloat
 
 
-SIZE_VALUES = {128, 256, 512}
+SIZE_VALUES = {128, 256, 512, -1}
 
 
 def validate_size(value):
