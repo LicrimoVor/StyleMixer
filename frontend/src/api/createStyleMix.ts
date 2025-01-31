@@ -1,4 +1,4 @@
-import { apiObj, apiUrl } from "@/config/const";
+import { apiObj, hostUrl } from "@/config/const";
 import { StyleMix } from "@/entities/StyleMixer";
 
 interface PropsImageMix {
@@ -26,7 +26,7 @@ export const createStyleMix = async ({ styleMix }: PropsImageMix) =>
       }
     )
     .then((response) => {
-      response.data.content = apiUrl + response.data.content;
-      response.data.style = apiUrl + response.data.style;
+      response.data.content = hostUrl + response.data.content;
+      response.data.style = hostUrl + response.data.style;
       return response;
     });

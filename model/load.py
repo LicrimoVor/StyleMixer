@@ -2,12 +2,13 @@
 
 import requests
 from pathlib import Path
-
-import kagglehub
+import zipfile
 
 
 def download_dataset():
     """Вызвать ее, чтобы скачать датасет."""
+    import kagglehub
+
     path = kagglehub.dataset_download("steubk/wikiart")
     print(path)
     path = kagglehub.dataset_download("awsaf49/coco-2017-dataset")
@@ -30,7 +31,10 @@ def download_model():
     response = requests.get(
         "https://drive.usercontent.google.com/u/0/uc?id=1MUNsqLdWWWW-gwQy99ZhnjRrKi9U_xKB&export=download"  # noqa
     )
-    path = Path(__file__).parent.joinpath("nets/StyleNet/model.pth")
+    data_path = Path(__file__).parent.joinpath("data/nets")
+
+    data_path.mkdir(exist_ok=True)
+    path = data_path.joinpath("StyleNet.pth")
     with open(path, "+wb") as f:
         f.write(response.content)
     print("Success!")
@@ -38,12 +42,28 @@ def download_model():
     response = requests.get(
         "https://drive.usercontent.google.com/u/0/uc?id=1aTS_O3FfLzq5peh20vbWfU4kNAnng6UT&export=download"  # noqa
     )
-    path = Path(__file__).parent.joinpath("nets/OtherNet/model.pth")
+    path = data_path.joinpath("OtherNet.pth")
     with open(path, "+wb") as f:
         f.write(response.content)
+    print("Success!")
+
+
+def download_styles():
+    data_path = Path(__file__).parent.joinpath("data/styles")
+    data_path.mkdir(exist_ok=True)
+    response = requests.get(
+        "https://drive.usercontent.google.com/u/0/uc?id=1o0xgXfy9GdIdm9gDi4HqSq3wBKulLDQS&export=download"  # noqa
+    )
+    path = data_path.joinpath("styles.zip")
+    with open(path, "+wb") as f:
+        f.write(response.content)
+
+    with zipfile.ZipFile(path, "r") as zip_ref:
+        zip_ref.extractall(data_path)
     print("Success!")
 
 
 # download()
 # check_count()
 download_model()
+download_styles()

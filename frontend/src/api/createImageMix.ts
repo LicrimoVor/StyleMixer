@@ -1,4 +1,4 @@
-import { apiObj, apiUrl } from "@/config/const";
+import { apiObj, hostUrl } from "@/config/const";
 import { StyleSettings } from "@/entities/StyleSettings";
 
 interface PropsImageMix {
@@ -17,6 +17,6 @@ export const createImageMix = async ({ id_api, settings }: PropsImageMix) =>
       headers: { "content-type": "application/json" },
     })
     .then((reponse) => {
-      reponse.data.img = apiUrl + reponse.data.img;
+      reponse.data.img = hostUrl + reponse.data.img;
       return reponse;
     });

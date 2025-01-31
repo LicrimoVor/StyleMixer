@@ -7,6 +7,8 @@ from torch import nn
 import torch
 from torchvision.transforms import v2
 
+from core.const import DEVICE
+
 
 BASE_DIR = Path(__file__).parent
 DataType = TypedDict(
@@ -38,7 +40,7 @@ class AbstractModule(ABC, nn.Module):
     @classmethod
     def load(cls, path: str):
         model = cls()
-        model.load_state_dict(torch.load(path, weights_only=True))
+        model.load_state_dict(torch.load(path, weights_only=True, map_location=DEVICE))
         model.eval()
         return model
 

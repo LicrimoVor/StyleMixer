@@ -5,6 +5,7 @@ from torchvision.transforms import v2
 from PIL.ImageFile import ImageFile
 
 from utils.denorm import denorm
+from core.const import BASE_PATH
 
 from ..abstract import DataType, AbstractNet
 from .decoder import Decoder
@@ -12,7 +13,7 @@ from .encoder import Encoder
 from .net import ModelNet
 
 
-PATH_MODEL = Path(__file__).parent.joinpath("model.pth")
+PATH_MODEL = BASE_PATH.joinpath("data/nets/StyleNet.pth")
 trans_1 = v2.Compose(
     [
         v2.ToImage(),

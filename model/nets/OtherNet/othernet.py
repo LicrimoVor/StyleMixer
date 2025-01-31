@@ -4,12 +4,14 @@ import torch
 from torchvision.transforms import v2
 from PIL.ImageFile import ImageFile
 
+from core.const import BASE_PATH
+
 from ..abstract import DataType, AbstractNet
 from .model import Model
 from .handler import handler
 
 
-PATH_MODEL = Path(__file__).parent.joinpath("model.pth")
+PATH_MODEL = BASE_PATH.joinpath("data/nets/OtherNet.pth")
 transforms = v2.ToPILImage()
 
 

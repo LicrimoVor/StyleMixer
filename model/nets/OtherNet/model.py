@@ -2,7 +2,7 @@
 
 import torch.nn as nn
 import torch.nn.functional as F
-from torchvision.models import vgg19
+from torchvision.models import vgg19, VGG19_Weights
 
 from ..abstract import AbstractModule
 
@@ -26,7 +26,7 @@ def adain(content_features, style_features):
 class VGGEncoder(nn.Module):
     def __init__(self):
         super().__init__()
-        vgg = vgg19(pretrained=True).features
+        vgg = vgg19(weights=VGG19_Weights.DEFAULT).features
         self.slice1 = vgg[:2]
         self.slice2 = vgg[2:7]
         self.slice3 = vgg[7:12]

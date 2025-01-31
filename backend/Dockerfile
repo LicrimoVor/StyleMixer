@@ -4,6 +4,8 @@ RUN mkdir /backend
 WORKDIR /backend
 
 COPY . .
+
 RUN pip3 install -r ./requirements.txt --no-cache-dir
+RUN alembic upgrade head
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

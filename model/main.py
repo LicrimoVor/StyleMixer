@@ -3,12 +3,12 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 
 from api.routers import main_router
-from core.const import HOST_URL, MODE
+from core.const import MODEL_URL, MODE
 
 
 app = FastAPI()
-app.mount("/media", StaticFiles(directory="data/wikiart"))
-origins = [f"http://{HOST_URL}"]
+app.mount("/media", StaticFiles(directory="data/styles"))
+origins = [f"http://{MODEL_URL}"]
 if MODE == "dev":
     origins += [
         "http://localhost",
