@@ -1,5 +1,3 @@
-from pathlib import Path
-
 import torch
 from torchvision.transforms import v2
 from PIL.ImageFile import ImageFile

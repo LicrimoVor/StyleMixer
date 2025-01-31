@@ -2,7 +2,8 @@ import axios from "axios";
 
 import { StyleSettings } from "@/entities/StyleSettings";
 
-// @ts-ignore
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
 export const hostUrl = import.meta.env.VITE_HOST_URL;
 export const apiObj = axios.create({
   withCredentials: true,
