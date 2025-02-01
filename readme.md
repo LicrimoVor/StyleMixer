@@ -1,3 +1,7 @@
+# StyleMixer
+
+![alt text](assets/image.png)
+
 Материалы:
     [metmuseum](https://www.metmuseum.org/) - хз че
     [DLS_streamlit_kit_tutor](https://github.com/Kotyga/DLS_streamlit_kit_tutor) - туториал по стримлиту (мб пригодится)
