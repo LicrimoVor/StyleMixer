@@ -69,31 +69,20 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
-      # - name: Executing remote ssh commands to deploy
-      #   uses: appleboy/ssh-action@master
-      #   with:
-      #     host: ${{ secrets.HOST }}
-      #     username: ${{ secrets.USER }}
-      #     password: ${{ secrets.PASSWORD }}
-      #     script: |
-      #       cd StyleMixer/
-      #       git checkout main
-      #       git pull
-      #       docker compose -f docker-compose.yml down
-      #       docker compose -f docker-compose.yml build
-      #       docker compose -f docker-compose.yml up -d
-      #       docker exec assistent alembic upgrade head
-      # - name: Replacing the NGINX proxy configuration file
-      #   uses: appleboy/ssh-action@master
-      #   with:
-      #     host: ${{ secrets.HOST }}
-      #     username: ${{ secrets.USER }}
-      #     password: ${{ secrets.PASSWORD }}
-      #     script: |
-      #       cd StyleMixer/config
-      #       rm /etc/nginx/sites-enabled/default
-      #       cp nginx.conf /etc/nginx/sites-enabled/default
-      #       systemctl reload nginx
+      - name: Executing remote ssh commands to deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          password: ${{ secrets.PASSWORD }}
+          script: |
+            cd StyleMixer/
+            git checkout main
+            git pull
+            docker compose -f docker-compose.yml down
+            docker compose -f docker-compose.yml build
+            docker compose -f docker-compose.yml up -d
+          # docker exec assistent alembic upgrade head
 
   send_message:
     runs-on: ubuntu-latest

@@ -1,4 +1,4 @@
-name: StyleMixer
+name: style_mixer
 
 volumes:
   static:
@@ -18,7 +18,7 @@ services:
     container_name: model
     build: ../model
     ports:
-      - 8080:8080
+      - 8081:8081
     volumes:
       - ../model/data:/model/data
       - ../model/data/nets:/root/.cache/torch/hub/checkpoints/
@@ -34,7 +34,6 @@ services:
   nginx:
     container_name: proxy
     image: nginx:1.19.3
-    restart: always
     ports:
       - "81:80"
     depends_on:

@@ -28,22 +28,27 @@ def check_count():
 
 
 def download_model():
+    data_path = Path(__file__).parent.joinpath("data/nets")
+    data_path.mkdir(exist_ok=True)
+    file_path_1 = data_path.joinpath("StyleNet.pth")
+    file_path_2 = data_path.joinpath("OtherNet.pth")
+
+    if file_path_1.exists() and file_path_2.exists():
+        return
+
     response = requests.get(
         "https://drive.usercontent.google.com/u/0/uc?id=1MUNsqLdWWWW-gwQy99ZhnjRrKi9U_xKB&export=download"  # noqa
     )
-    data_path = Path(__file__).parent.joinpath("data/nets")
 
-    data_path.mkdir(exist_ok=True)
-    path = data_path.joinpath("StyleNet.pth")
-    with open(path, "+wb") as f:
+    with open(file_path_1, "+wb") as f:
         f.write(response.content)
     print("Success!")
 
     response = requests.get(
         "https://drive.usercontent.google.com/u/0/uc?id=1aTS_O3FfLzq5peh20vbWfU4kNAnng6UT&export=download"  # noqa
     )
-    path = data_path.joinpath("OtherNet.pth")
-    with open(path, "+wb") as f:
+
+    with open(file_path_2, "+wb") as f:
         f.write(response.content)
     print("Success!")
 
@@ -51,14 +56,18 @@ def download_model():
 def download_styles():
     data_path = Path(__file__).parent.joinpath("data/styles")
     data_path.mkdir(exist_ok=True)
+    file_path = data_path.joinpath("styles.zip")
+    if file_path.exists():
+        return
+
     response = requests.get(
         "https://drive.usercontent.google.com/u/0/uc?id=1o0xgXfy9GdIdm9gDi4HqSq3wBKulLDQS&export=download"  # noqa
     )
-    path = data_path.joinpath("styles.zip")
-    with open(path, "+wb") as f:
+
+    with open(file_path, "+wb") as f:
         f.write(response.content)
 
-    with zipfile.ZipFile(path, "r") as zip_ref:
+    with zipfile.ZipFile(file_path, "r") as zip_ref:
         zip_ref.extractall(data_path)
     print("Success!")
 
