@@ -75,6 +75,7 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           # password: ${{ secrets.PASSWORD }}
+          passphrase: ${{ secrets.PASSPHRASE }}
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd StyleMixer/
