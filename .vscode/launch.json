@@ -28,7 +28,7 @@
                 "main:app",
                 "--reload",
                 "--port",
-                "8080"
+                "8081"
             ],
             "jinja": true
         }

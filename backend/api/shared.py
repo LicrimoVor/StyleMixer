@@ -1,5 +1,4 @@
 import requests
-import asyncio
 
 from fastapi import APIRouter
 
@@ -16,8 +15,7 @@ async def gen_styles(count: int):
     urls = resp.json()
     images = []
     for url in urls:
-        resp = requests.get(MODEL_URL + url, verify=False)
-        await asyncio.sleep(0.1)
+        resp = requests.get(MODEL_URL + url)
         images.append(bytes_to_base64(resp.content, meta=True))
 
     return images

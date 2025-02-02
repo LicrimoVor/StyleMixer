@@ -23,7 +23,7 @@ if MODE == "dev":
 
     from fastapi.staticfiles import StaticFiles
 
-    app.mount("/api/media/", StaticFiles(directory="storage/images"))
+    app.mount("/media/", StaticFiles(directory="storage/images"))
 
 
 app.add_middleware(

@@ -52,7 +52,6 @@ export const StyleMixerRedactor: FC <StyleMixerRedactorProps> = memo((
                 dispatch({ type: 'addMix', id: styleMix.id, payload: imageMix })
             }).catch((reason) => {
                 setIsLoading(false)
-                console.log(reason)
                 const error = reason.message
                 const imageMix = {
                     settings,

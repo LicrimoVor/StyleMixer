@@ -16,6 +16,8 @@
 
 .content {
   padding: 20px 64px;
+  overflow-x: auto;
+  height: 100%;
 }
 
 body {

@@ -7,22 +7,8 @@ import { Popover } from '@/components/shared/Popover';
 import { Slider } from '@/components/shared/Slider';
 import { useGeneralContext } from '@/stores/context/general';
 
+import { DataModels, DataSizes, ListBoxItem } from '../models/settings'
 import './StyleMixerSettings.css';
-
-
-type ListBoxItem<T> = {
-    value: T,
-    readonly?: boolean,
-}
-const DataModels: ListBoxItem<Model>[] = [
-    { value: 'VGG16'},
-    { value: 'VGG19'},
-]
-const DataSizes: ListBoxItem<Size>[] = [
-    { value: '128' },
-    { value: '256' },
-    { value: '512' },
-]
 
 
 interface StyleMixerSettingsProps {

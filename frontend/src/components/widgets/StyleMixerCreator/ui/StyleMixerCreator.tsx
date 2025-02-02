@@ -18,7 +18,7 @@ interface StyleMixerCreatorProps {
 
 
 const ImageEditable = memo(({ image, callback }: {image: string, callback: (file: File) => void}) => (
-        <div>
+        <div className='StyleMixerCreatorEditor'>
             <Image src={image} size={250} border={8}/>
             <ImageUploaderBtn callback={callback} label='Изменить'/>
         </div>
@@ -63,7 +63,7 @@ export const StyleMixerCreator: FC <StyleMixerCreatorProps> = memo((
     const onCreateHandler = useCallback(() => {
         if (!style || !content || !callback) return;
         callback(content, style, settings)
-    }, [style, content, callback])
+    }, [style, content, settings, callback])
     
     return (
         <div className={className + ' StyleMixerCreator'}>
